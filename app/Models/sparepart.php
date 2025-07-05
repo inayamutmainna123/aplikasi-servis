@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
-class sparepart extends Model
+class Sparepart extends Model
 {
    use HasUlids;
-   protected $table = "sparepart";
+   protected $table = "Sparepart";
 
    protected $fillable = [
       'nama_sparepart',
@@ -16,4 +16,7 @@ class sparepart extends Model
       'stok_sparepart',
       'deskripsi',
    ];
+
+
 }
+

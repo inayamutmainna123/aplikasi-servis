@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('costumer', function (Blueprint $table) {
             $table->ulid('id');
-            $table->string('nama_costumer');
+            $table->string('nama_costumer') ();
             $table->string('email_costumer') ->unique();
-            $table->string('no_hp_costumer');
+            $table->string('no_hp_costumer') ;
             $table->text('alamat_costumer');
             $table->timestamps();
         });

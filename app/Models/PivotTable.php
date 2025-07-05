@@ -1,0 +1,41 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Model;
+
+class PivotTable extends Model
+{
+    use HasUlids;
+    protected $table = "pivot_table";
+    protected $fillable = [
+        "costumer_id",
+        "sparepart_id",
+        "service_item_id",
+        "service_detail_id",
+    ];
+
+    public function serviceDetail()
+    {
+        return $this->belongsTo(ServiceDetail::class);
+    }
+
+    public function serviceItem()
+    {
+        return $this->belongsTo(ServiceItem::class);
+    }
+
+    public function sparepart()
+    {
+        return $this->belongsTo(Sparepart::class);
+    }
+
+    public function costumer()
+    {
+        return $this->belongsTo(Costumer::class);
+    }
+
+   
+}
+

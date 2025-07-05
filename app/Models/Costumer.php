@@ -10,10 +10,10 @@ class Costumer extends Model
     use HasUlids;
     protected $table = "costumer";
     protected $fillable = [
-    'name',
-    'email',
-    'phone',
-    'address',
+    'nama_costumer',
+    'email_costumer',
+    'no_hp_costumer',
+    'alamat_costumer',
     ];
 
 }

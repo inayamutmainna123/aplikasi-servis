@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('service_detail', function (Blueprint $table) {
             $table->ulid( 'id') ->primary();
             $table->foreignUlid('service_item_id')->nullable();
-            $table->foreignUlid('produk_id')->nullable();
+            $table->foreignUlid('sparepart_id')->nullable();
+            $table->foreignUlid('costumer_id')->nullable();
             $table->string('tipe_kendaraan');
             $table->string('merek_kendaraan');
             $table->string('model_kendaraan');
@@ -34,3 +35,4 @@ return new class extends Migration
         Schema::dropIfExists('service_detail');
     }
 };
+
