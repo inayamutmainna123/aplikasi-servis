@@ -10,20 +10,20 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::table('users', function (Blueprint $table) {
-        $table->string('role')->nullable()->after('password');
-    });
-}
+    {
+        Schema::create('merek_kendaraan', function (Blueprint $table) {
+            $table->ulid( 'id');
+            $table->string('kode_merek_kendaraan');
+            $table->string('merek_kendaraan');
+            $table->timestamps();
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('role');
-        });
-        
+        Schema::dropIfExists('merek_kendaraan');
     }
 };
