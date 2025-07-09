@@ -25,10 +25,10 @@ use Filament\Notifications\Notification;
 class ServiceDetailResource extends Resource
 {
     protected static ?string $model = ServiceDetail::class;
-    
+
     protected static ?string $pluralLabel = " Service Detail";
 
-    protected static ?string $slug = "ServiceDetail";
+    protected static ?string $slug = "service_detail";
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -101,7 +101,7 @@ class ServiceDetailResource extends Resource
                             $set('sparepart_id', null);
                         }
                         })
-                                ->required(),
+                        ->required(),
                     Forms\Components\TextInput::make('jumlah')
                         ->numeric()
                         ->label('Jumlah')
@@ -110,11 +110,14 @@ class ServiceDetailResource extends Resource
                         // }),
 
                     ])
+
+
                         ->minItems(1)
                         ->columns(2)
                         ->required(),
                     Forms\Components\TextInput::make('catatan')
                         ->label('Catatan'),
+
                     Forms\Components\Select::make('Status')
                         ->options([
                             'belum diperbaiki'=> 'belum diperbaiki',
@@ -128,7 +131,10 @@ class ServiceDetailResource extends Resource
                     Forms\Components\DatePicker::make('tanggal_service')
                         ->required()
                         ->label('Tanggal Service'),
-        ]);
+
+
+                ]);
+
 
     }
 
@@ -172,6 +178,8 @@ class ServiceDetailResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
+
+                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
