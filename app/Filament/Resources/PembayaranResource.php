@@ -6,11 +6,14 @@ use App\Filament\Resources\PembayaranResource\Pages;
 use App\Models\Pembayaran;
 use App\Models\ServiceItem;
 use App\Models\Sparepart;
-use Filament\Forms\Components\DatePicker;
+use Filament\Forms;
+use Filament\Forms\Form;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Get;
+use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -18,6 +21,10 @@ use Filament\Tables\Table;
 class PembayaranResource extends Resource
 {
     protected static ?string $model = Pembayaran::class;
+
+    protected static ?string $pluralLabel = " Pembayaran";
+    protected static ?string $slug = "Pembayaran";
+    protected static ?int $navigationSort = 0;
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
     public static function form(Form $form): Form
@@ -25,170 +32,143 @@ class PembayaranResource extends Resource
         return $form->schema([
             Select::make('costumer_id')
                 ->relationship('costumer', 'nama_costumer')
-                ->label('Costumer')
-                ->required(),
+                ->required()
+                ->label('Customer'),
+
+            DateTimePicker::make('tanggal_pembayaran')
+                ->required()
+                ->label('Tanggal Pembayaran'),
 
             Repeater::make('items')
                 ->label('Detail Pembayaran')
+                ->relationship('items')
                 ->schema([
+                    // SERVICE
                     Select::make('service_item_id')
-                        ->label('Service')
+                        ->label('Nama Service')
                         ->options(fn () => ServiceItem::pluck('nama_service', 'id'))
+                        ->searchable()
                         ->reactive()
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            $service = ServiceItem::find($state);
-                            $set('harga_service', $service?->harga_service ?? 0);
-                        })
-                        ->required(),
+                        ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                            $harga_service = ServiceItem::find($state)?->harga_service ?? 0;
+                            $set('harga_service', $harga_service);
+                            }),
 
                     TextInput::make('harga_service')
-                        ->label('Harga Service')
-                        ->disabled()
                         ->numeric()
-                        ->default(0),
-
-                    Select::make('sparepart_id')
-                        ->label('Sparepart')
-                        ->options(fn () => Sparepart::pluck('nama_sparepart', 'id'))
-                        ->reactive()
-                        ->afterStateUpdated(function ($state, callable $set) {
-                            $sparepart = Sparepart::find($state);
-                            $set('harga_sparepart', $sparepart?->harga_sparepart ?? 0);
-                        })
-                        ->required(),
-
-                    TextInput::make('harga_sparepart')
-                        ->label('Harga Sparepart')
-                        ->disabled()
-                        ->numeric()
-                        ->default(0),
+                        ->readOnly()
+                        ->label('Harga Service'),
 
                     TextInput::make('jumlah_service')
-                        ->label('Jumlah Service')
                         ->numeric()
-                        ->default(1)
-                        ->required()
+                        ->default(0)
                         ->reactive(),
+
+                        Select::make('sparepart_id')
+                        ->label('Nama Sparepart')
+                        ->options(fn () => Sparepart::pluck('nama_sparepart', 'id')) 
+                        ->searchable()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                            $harga_sparepart = Sparepart::find($state)?->harga_sparepart ?? 0;
+                            $set('harga_sparepart', $harga_sparepart);
+                        }),
+
+                    TextInput::make('harga_sparepart')
+                        ->numeric()
+                        ->readOnly()
+                        ->label('Harga Sparepart'),
 
                     TextInput::make('jumlah_sparepart')
-                        ->label('Jumlah Sparepart')
                         ->numeric()
-                        ->default(1)
-                        ->required()
+                        ->default(0)
                         ->reactive(),
                 ])
-                ->columns(3)
-                ->minItems(1)
+                ->columns(2)
                 ->reactive()
-                ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                    // Hitung ulang total harga ketika item berubah
-                    $total = collect($state)->sum(function ($item) {
-                        $hargaService = $item['harga_service'] ?? 0;
-                        $jumlahService = $item['jumlah_service'] ?? 0;
-                        $hargaSparepart = $item['harga_sparepart'] ?? 0;
-                        $jumlahSparepart = $item['jumlah_sparepart'] ?? 0;
+                ->afterStateUpdated(function (Get $get, Set $set) {
+                    $items = $get('items');
 
-                        return ($hargaService * $jumlahService) + ($hargaSparepart * $jumlahSparepart);
+                    $total = collect($items)->sum(function ($item) {
+                        $totalService = (double)($item['harga_service'] ?? 0) * (double)($item['jumlah_service'] ?? 0);
+                        $totalSparepart = (double)($item['harga_sparepart'] ?? 0) * (double)($item['jumlah_sparepart'] ?? 0);
+                        return $totalService + $totalSparepart;
                     });
 
                     $set('total_harga', $total);
-
-                    // Juga hitung ulang kembalian jika total_bayar sudah diisi
-                    $totalBayar = $get('total_bayar') ?? 0;
-                    $set('total_kembalian', $totalBayar - $total);
+                    $bayar = (double)($get('total_bayar') ?? 0);
+                    $set('total_kembali', $bayar - $total);
                 }),
 
             TextInput::make('total_harga')
-                ->label('Total Harga')
-                ->disabled()
                 ->numeric()
-                ->default(0),
+                ->readOnly()
+                ->label('Total Harga'),
 
             TextInput::make('total_bayar')
-                ->label('Total Bayar')
                 ->numeric()
                 ->reactive()
-                ->required()
-                ->afterStateUpdated(function ($state, callable $set, callable $get) {
-                    $totalHarga = $get('total_harga') ?? 0;
-                    $set('total_kembalian', $state - $totalHarga);
+                ->label('Total Bayar')
+                ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                    $total = (double)($get('total_harga') ?? 0);
+                    $set('total_kembali', (double)$state - $total);
                 }),
 
-            TextInput::make('total_kembalian')
-                ->label('Kembalian')
-                ->disabled()
+            TextInput::make('total_kembali')
                 ->numeric()
-                ->default(0),
+                ->readOnly()
+                ->label('Total Kembalian'),
+
+            Select::make('status')
+                ->options([
+                    'lunas' => 'Lunas',
+                    'belum lunas' => 'Belum Lunas',
+                ])
+                ->required(),
 
             Select::make('metode_pembayaran')
-                ->label('Metode Pembayaran')
                 ->options([
                     'cash' => 'Cash',
                 ])
                 ->default('cash')
                 ->required(),
-
-            Select::make('status')
-                ->label('Status')
-                ->options([
-                    'belum lunas' => 'Belum Lunas',
-                    'lunas' => 'Lunas',
-                ])
-                ->default('belum lunas')
-                ->required(),
-
-            DatePicker::make('tanggal_pembayaran')
-                ->label('Tanggal Pembayaran')
-                ->required(),
-        ]);
+        ])      ->columns(2);
     }
 
     public static function table(Table $table): Table
     {
-        return $table->columns([
-            Tables\Columns\TextColumn::make('costumer.nama_costumer')->label('Costumer'),
-
-            Tables\Columns\TextColumn::make('items')
-                ->label('Service')
-                ->getStateUsing(fn ($record) =>
-                    $record->items->pluck('serviceItem.nama_service')->join(', ')
-                ),
-
-            Tables\Columns\TextColumn::make('items')
-                ->label('Sparepart')
-                ->getStateUsing(fn ($record) =>
-                    $record->items->pluck('sparepart.nama_sparepart')->join(', ')
-                ),
-            
-            Tables\Columns\TextColumn::make('items')
-                ->label('Jumlah Service')
-                ->getStateUsing(fn ($record) =>
-                    $record->items->pluck('jumlah_service')->join(', ')
-                ),
-
-            Tables\Columns\TextColumn::make('items')
-                ->label('Jumlah Sparepart')
-                ->getStateUsing(fn ($record) =>
-                    $record->items->pluck('jumlah_sparepart')->join(', ')
-                ),
-
-            Tables\Columns\TextColumn::make('total_harga')->label('Total Harga'),
-            Tables\Columns\TextColumn::make('total_bayar')->label('Bayar'),
-            Tables\Columns\TextColumn::make('total_kembalian')->label('Kembalian'),
-            Tables\Columns\TextColumn::make('status')->label('Status'),
-            Tables\Columns\TextColumn::make('tanggal_pembayaran')->date()->label('Tanggal Bayar'),
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\DeleteBulkAction::make(),
-        ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [];
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('costumer.nama_costumer')
+                    ->label(' Nama Customer'),
+                Tables\Columns\TextColumn::make('service_item.nama_service')
+                    ->label('Nama Service'),
+                Tables\Columns\TextColumn::make('sparepart.nama_sparepart')
+                    ->label('Nama Sparepart'),
+                Tables\Columns\TextColumn::make('service_item.harga_service')
+                    ->label('Harga Service'),
+                Tables\Columns\TextColumn::make('sparepart.harga_sparepart')
+                    ->label('Harga Sparepart'),
+                Tables\Columns\TextColumn::make('total_harga')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('total_bayar')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('total_kembali')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('status')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('tanggal_pembayaran')
+                    ->date(),
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                
+            ])
+            ->bulkActions([
+                Tables\Actions\DeleteBulkAction::make(),
+            ]);
     }
 
     public static function getPages(): array

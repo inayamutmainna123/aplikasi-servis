@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pivot_table', function (Blueprint $table) {
+        Schema::create('sparepart', function (Blueprint $table) {
             $table->ulid( 'id') ->primary();
-            $table->foreignUlid('costumer_id')->nullable();
-            $table->foreignUlid('sparepart_id')->nullable();
-            $table->foreignUlid('service_item_id')->nullable(); 
-            $table->foreignUlid('service_detail_id')->nullable(); 
+            $table->string('nama_sparepart');
+            $table->string('harga_sparepart');
+            $table->double('stok_sparepart');
+            $table->text('deskripsi');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pivot_service');
+        Schema::dropIfExists('sparepart');
     }
 };

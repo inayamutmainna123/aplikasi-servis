@@ -14,6 +14,7 @@ class PivotTable extends Model
         "sparepart_id",
         "service_item_id",
         "service_detail_id",
+        "pembayaran_id",
     ];
 
     public function serviceDetail()
@@ -34,6 +35,11 @@ class PivotTable extends Model
     public function costumer()
     {
         return $this->belongsTo(Costumer::class);
+    }
+
+    public function pembayaran()
+    {
+        return $this->belongsTo(Pembayaran::class);
     }
 
    

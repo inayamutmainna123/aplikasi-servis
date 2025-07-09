@@ -19,8 +19,8 @@ class MerekKendaraanResource extends Resource
 
     protected static ?string $pluralLabel = " Merek Kendaraan";
     protected static ?string $slug = "MerekKendaraan";
-
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationGroup = "Data Master";
+    protected static ?string $navigationIcon = 'heroicon-o-truck';
 
     public static function form(Form $form): Form
     {

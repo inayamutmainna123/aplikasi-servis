@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Sparepart;
+
+
 
 class ServiceDetail extends Model
 {
@@ -20,6 +23,7 @@ class ServiceDetail extends Model
         'plat_kendaraan',
         'catatan',
         'status',
+        'jumlah',
         'tanggal_service',
     ];
 
@@ -35,6 +39,11 @@ class ServiceDetail extends Model
         return $this->hasMany(PivotTable::class);
     }
 
+   
+    
 
 }
+
+
+
 

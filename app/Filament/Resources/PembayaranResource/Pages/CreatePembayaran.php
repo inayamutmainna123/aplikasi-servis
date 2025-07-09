@@ -3,10 +3,10 @@
 namespace App\Filament\Resources\PembayaranResource\Pages;
 
 use App\Filament\Resources\PembayaranResource;
-use Filament\Actions;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreatePembayaran extends CreateRecord
 {
-    protected static string $resource = PembayaranResource::class;
+     public static string $resource = PembayaranResource::class;
+    // HAPUS fungsi mutateFormDataBeforeCreate karena tidak dibutuhkan
 }

@@ -1,0 +1,1 @@
+INSERT INTO `service_item` (`id`, `nama_service`, `harga_service`, `deskripsi`, `created_at`, `updated_at`) VALUES ('01jzddfnn9hgx042aa4py8zkxz', 'ganti oli', '6500', 'oke', '2025-07-05 13:47:47', '2025-07-06 14:08:03');

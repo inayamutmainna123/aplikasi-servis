@@ -12,6 +12,9 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\ImageUpload;
+
 
 class SparepartResource extends Resource
 {
@@ -19,29 +22,31 @@ class SparepartResource extends Resource
 
     protected static ?string $pluralLabel = " Sparepart";
     protected static ?string $slug = "Sparepart";
+    protected static ?string $navigationGroup = "Data Master";
+   
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_sparepart')
-                ->required()
-                ->label('Nama Sparepart')
-                ->maxLength(255),
+                    ->required()
+                    ->label('Nama Sparepart')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('harga_sparepart')
-                ->required()
-                ->numeric()
-                ->label('Harga Sparepart'),
+                    ->required()
+                    ->numeric()
+                    ->label('Harga Sparepart'),
                 Forms\Components\TextInput::make('stok_sparepart')
-                ->required()
-                ->numeric()
-                ->label('Stok Sparepart'),
+                    ->required()
+                    ->numeric()
+                    ->label('Stok Sparepart'),
                 Forms\Components\TextInput::make('deskripsi')
-                ->required()
-                ->label('Deskripsi')
-                ->maxLength(255),
+                    ->required()
+                    ->label('Deskripsi')
+                    ->maxLength(255),
             ]);
     }
 
@@ -49,20 +54,29 @@ class SparepartResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_sparepart'),
-                Tables\Columns\TextColumn::make('harga_sparepart'),
-                Tables\Columns\TextColumn::make('stok_sparepart'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('nama_sparepart')
+                    ->label('Nama Sparepart'),
+                Tables\Columns\TextColumn::make('harga_sparepart')
+                    ->label('Harga Sparepart'),
+                Tables\Columns\TextColumn::make('stok_sparepart')
+                    ->label('Stok Sparepart'),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Deskripsi'),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                
+               
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                 
                 ]),
             ]);
     }
@@ -73,13 +87,15 @@ class SparepartResource extends Resource
             //
         ];
     }
-
+    
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListSpareparts::route('/'),
             'create' => Pages\CreateSparepart::route('/create'),
             'edit' => Pages\EditSparepart::route('/{record}/edit'),
+            
+            
         ];
     }
 }

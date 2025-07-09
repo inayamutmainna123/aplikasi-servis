@@ -12,17 +12,17 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pembayaran', function (Blueprint $table) {
-            $table->ulid( 'id') ->primary();
+            $table->ulid( 'id')->primary();
             $table->foreignUlid('costumer_id')->nullable();
             $table->foreignUlid('sparepart_id')->nullable();
-            $table->foreignUlid('service_item_id')->nullable(); 
-            $table->double('jumlah_sparepart');
-            $table->double('jumlah_service');
-            $table->double('total_harga');
-            $table->double('total_bayar');
-            $table->double('total_kembalian');
-            $table->enum ('metode_pembayaran', ['cash'])-> default('cash');
-            $table->enum(   'status', ['belum lunas',' lunas']) ->default('belum lunas');
+            $table->foreignUlid('service_item_id')->nullable();
+            $table->double('jumlah_sparepart')->nullable();
+            $table->double('jumlah_service')->nullable();
+            $table->double('total_harga')->nullable();
+            $table->double('total_bayar')->nullable();
+            $table->double('total_kembali')->default(0);
+            $table->enum('status', ['belum lunas','lunas'])->default('belum lunas');
+            $table->enum('metode_pembayaran', ['cash'])->default('cash');
             $table->datetime('tanggal_pembayaran');
             $table->timestamps();
         });

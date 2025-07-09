@@ -2,13 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class pembayaran extends Model
+class Pembayaran extends Model
 {
     use HasUlids;
-    protected $table = "pembayaran";
+
+    protected $table = 'pembayaran';
 
     protected $fillable = [
         'costumer_id',
@@ -18,23 +20,27 @@ class pembayaran extends Model
         'jumlah_service',
         'total_harga',
         'total_bayar',
-        'total_kembalian',
+        'total_kembali',
         'metode_pembayaran',
         'status',
         'tanggal_pembayaran',
     ];
 
+    protected $casts = [
+        'tanggal_pembayaran' => 'datetime',
+    ];
+
+    // Relasi ke Costumer
     public function costumer()
     {
         return $this->belongsTo(Costumer::class);
     }
 
-        public function sparepart()
+    public function sparepart()
     {
         return $this->belongsTo(Sparepart::class);
     }
 
-    
     public function serviceItem()
     {
         return $this->belongsTo(ServiceItem::class);
@@ -42,7 +48,8 @@ class pembayaran extends Model
 
     public function items()
     {
-        return $this->hasMany(PembayaranItem::class);
+        return $this->hasMany(PivotTable::class);
     }
-}
 
+    
+}

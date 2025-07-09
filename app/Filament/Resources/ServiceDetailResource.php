@@ -17,7 +17,9 @@ use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TimePicker;
-use Filament\Notifications\Notification; 
+use Filament\Forms\Get;
+use Filament\Notifications\Notification;
+
 
 
 class ServiceDetailResource extends Resource
@@ -28,7 +30,7 @@ class ServiceDetailResource extends Resource
     protected static ?string $slug = "ServiceDetail";
 
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public static function form(Form $form): Form
     {
@@ -65,7 +67,7 @@ class ServiceDetailResource extends Resource
             Forms\Components\TextInput::make('plat_kendaraan')
                 ->label('Plat Kendaraan'),
 
-                Repeater::make('items')
+            Repeater::make('items')
                 ->relationship('items')
                 ->label('Service dan Sparepart')
                 ->schema([
@@ -80,6 +82,7 @@ class ServiceDetailResource extends Resource
                             return Sparepart::pluck('nama_sparepart', 'id');
                         })
                         ->reactive()
+                        ->live()
                         ->afterStateUpdated(function ($state, callable $set) {
                             if (!$state) return;
                         
@@ -98,10 +101,20 @@ class ServiceDetailResource extends Resource
                         })
                         
                         ->required(),
-                ])
-                ->minItems(1)
-                ->columns(2)
-                ->required(),
+                    
+                    Forms\Components\TextInput::make('jumlah')
+                        ->numeric()
+                        ->label('Jumlah')
+                        ->default(function (Get $get, $state) {
+                            dd($get('sparepart_id'));
+                        }),
+                        
+                    ])
+                    
+                
+                    ->minItems(1)
+                    ->columns(2)
+                    ->required(),
             Forms\Components\TextInput::make('catatan')
                 ->label('Catatan'),
     
@@ -163,6 +176,10 @@ class ServiceDetailResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                
+                
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

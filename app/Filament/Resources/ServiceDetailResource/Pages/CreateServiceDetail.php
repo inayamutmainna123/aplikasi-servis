@@ -9,4 +9,6 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateServiceDetail extends CreateRecord
 {
     protected static string $resource = ServiceDetailResource::class;
+
+    
 }
