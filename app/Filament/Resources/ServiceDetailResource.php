@@ -25,7 +25,7 @@ use Filament\Notifications\Notification;
 class ServiceDetailResource extends Resource
 {
     protected static ?string $model = ServiceDetail::class;
-
+    
     protected static ?string $pluralLabel = " Service Detail";
 
     protected static ?string $slug = "ServiceDetail";
