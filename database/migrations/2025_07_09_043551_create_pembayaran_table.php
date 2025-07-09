@@ -13,11 +13,15 @@ return new class extends Migration
     {
         Schema::create('pembayaran', function (Blueprint $table) {
             $table->ulid( 'id')->primary();
-            $table->foreignUlid('costumer_id')->nullable();
+            $table->foreignUlid('costumer_id') ->nullable();
             $table->foreignUlid('sparepart_id')->nullable();
             $table->foreignUlid('service_item_id')->nullable();
-            $table->double('jumlah_sparepart')->nullable();
-            $table->double('jumlah_service')->nullable();
+            $table->string('nama_service');
+            $table->string('nama_sparepart');
+            $table->double('harga_service');
+            $table->double('harga_sparepart');
+            $table->double('jumlah_sparepart');
+            $table->double('jumlah_service');
             $table->double('total_harga')->nullable();
             $table->double('total_bayar')->nullable();
             $table->double('total_kembali')->default(0);
@@ -36,3 +40,7 @@ return new class extends Migration
         Schema::dropIfExists('pembayaran');
     }
 };
+
+
+
+

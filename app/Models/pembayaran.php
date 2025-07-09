@@ -16,6 +16,10 @@ class Pembayaran extends Model
         'costumer_id',
         'sparepart_id',
         'service_item_id',
+        'nama_service',
+        'nama_sparepart',
+        'harga_service',
+        'harga_sparepart',
         'jumlah_sparepart',
         'jumlah_service',
         'total_harga',
@@ -30,25 +34,24 @@ class Pembayaran extends Model
         'tanggal_pembayaran' => 'datetime',
     ];
 
-    // Relasi ke Costumer
-    public function costumer()
+    public function Costumer()
     {
-        return $this->belongsTo(Costumer::class);
+        return $this->belongsTo(Costumer::class,'costumer_id');
     }
 
-    public function sparepart()
+    public function Sparepart()
     {
-        return $this->belongsTo(Sparepart::class);
+        return $this->belongsTo(Sparepart::class, 'sparepart_id');
     }
 
-    public function serviceItem()
+    public function ServiceItem()
     {
-        return $this->belongsTo(ServiceItem::class);
+        return $this->belongsTo(ServiceItem::class, 'service_item_id');
     }
 
     public function items()
     {
-        return $this->hasMany(PivotTable::class);
+        return $this->hasMany(PivotTable::class,'pembayaran_id');
     }
 
     

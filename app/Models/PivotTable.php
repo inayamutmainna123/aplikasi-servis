@@ -24,12 +24,12 @@ class PivotTable extends Model
 
     public function serviceItem()
     {
-        return $this->belongsTo(ServiceItem::class);
+        return $this->belongsTo(ServiceItem::class,"service_item_id");
     }
 
     public function sparepart()
     {
-        return $this->belongsTo(Sparepart::class);
+        return $this->belongsTo(Sparepart::class,"sparepart_id");
     }
 
     public function costumer()

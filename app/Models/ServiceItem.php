@@ -16,5 +16,6 @@ class ServiceItem extends Model
         'deskripsi',
     ];
     
+    
 }
 
