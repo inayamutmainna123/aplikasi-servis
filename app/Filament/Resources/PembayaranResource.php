@@ -23,8 +23,11 @@ class PembayaranResource extends Resource
     protected static ?string $model = Pembayaran::class;
 
     protected static ?string $pluralLabel = " Pembayaran";
+
     protected static ?string $slug = "Pembayaran";
+
     protected static ?int $navigationSort = 0;
+    
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
     public static function form(Form $form): Form
@@ -53,19 +56,15 @@ class PembayaranResource extends Resource
                 ->afterStateUpdated(function ($state, Set $set, Get $get) {
                 $harga_service = ServiceItem::find($state)?->harga_service ?? 0;
                 $set('harga_service', $harga_service);
-                    }),
-                            
-
+                    }),           
             TextInput::make('harga_service')
                 ->numeric()
                 ->readOnly()
                 ->label('Harga Service'),
-
             TextInput::make('jumlah_service')
                 ->numeric()
                 ->default(0)
                 ->reactive(),
-
             Select::make('sparepart_id')
                 ->label('Nama Sparepart')
                 ->relationship('Sparepart', 'nama_sparepart')
@@ -76,9 +75,7 @@ class PembayaranResource extends Resource
                 ->afterStateUpdated(function ($state, Set $set, Get $get) {
                 $harga_sparepart = Sparepart::find($state)?->harga_sparepart ?? 0;
                 $set('harga_sparepart', $harga_sparepart);
-                    }),
-                
-
+                    }),                
             TextInput::make('harga_sparepart')
                 ->numeric()
                 ->readOnly()
@@ -110,7 +107,6 @@ class PembayaranResource extends Resource
                 ->numeric()
                 ->readOnly()
                 ->label('Total Harga'),
-
             TextInput::make('total_bayar')
                 ->numeric()
                 ->reactive()
@@ -119,19 +115,16 @@ class PembayaranResource extends Resource
                     $total = (double)($get('total_harga') ?? 0);
                     $set('total_kembali', (double)$state - $total);
                 }),               
-
             TextInput::make('total_kembali')
                 ->numeric()
                 ->readOnly()
                 ->label('Total Kembalian'),
-
             Select::make('status')
                 ->options([
                     'lunas' => 'Lunas',
                     'belum lunas' => 'Belum Lunas',
                 ])
                 ->required(),
-
             Select::make('metode_pembayaran')
                 ->options([
                     'cash' => 'Cash',
@@ -173,8 +166,7 @@ class PembayaranResource extends Resource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                
+                Tables\Actions\DeleteAction::make(), 
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

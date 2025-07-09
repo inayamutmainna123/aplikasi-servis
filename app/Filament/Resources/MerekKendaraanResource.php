@@ -18,8 +18,11 @@ class MerekKendaraanResource extends Resource
     protected static ?string $model = MerekKendaraan::class;
 
     protected static ?string $pluralLabel = " Merek Kendaraan";
+
     protected static ?string $slug = "MerekKendaraan";
+
     protected static ?string $navigationGroup = "Data Master";
+    
     protected static ?string $navigationIcon = 'heroicon-o-truck';
 
     public static function form(Form $form): Form

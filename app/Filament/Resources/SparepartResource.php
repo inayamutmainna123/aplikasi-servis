@@ -19,12 +19,9 @@ use Filament\Forms\Components\ImageUpload;
 class SparepartResource extends Resource
 {
     protected static ?string $model = Sparepart::class;
-
     protected static ?string $pluralLabel = " Sparepart";
     protected static ?string $slug = "Sparepart";
     protected static ?string $navigationGroup = "Data Master";
-   
-
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
     public static function form(Form $form): Form
@@ -70,13 +67,10 @@ class SparepartResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                
-               
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                 Tables\Actions\DeleteBulkAction::make(),
-                 
                 ]),
             ]);
     }

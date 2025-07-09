@@ -86,20 +86,20 @@ class ServiceDetailResource extends Resource
                         // ->reactive()
                         ->live()
                         ->afterStateUpdated(function ($state, callable $set) {
-                            if (!$state) return;
+                        if (!$state) return;
 
-                            $sparepart = Sparepart::find($state);
+                        $sparepart = Sparepart::find($state);
 
-                            if (!$sparepart || (double) $sparepart->stok_sparepart <= 0) {
-                                Notification::make()
-                                    ->title('Stok Habis')
-                                    ->body("Stok untuk sparepart \"{$sparepart?->nama_sparepart}\" sudah habis.")
-                                    ->danger()
-                                    ->persistent()
-                                    ->send();
+                        if (!$sparepart || (double) $sparepart->stok_sparepart <= 0) {
+                            Notification::make()
+                                ->title('Stok Habis')
+                                ->body("Stok untuk sparepart \"{$sparepart?->nama_sparepart}\" sudah habis.")
+                                ->danger()
+                                ->persistent()
+                                ->send();
 
-                                $set('sparepart_id', null);
-                            }
+                            $set('sparepart_id', null);
+                        }
                         })
                                 ->required(),
                     Forms\Components\TextInput::make('jumlah')
@@ -110,31 +110,25 @@ class ServiceDetailResource extends Resource
                         // }),
 
                     ])
+                        ->minItems(1)
+                        ->columns(2)
+                        ->required(),
+                    Forms\Components\TextInput::make('catatan')
+                        ->label('Catatan'),
+                    Forms\Components\Select::make('Status')
+                        ->options([
+                            'belum diperbaiki'=> 'belum diperbaiki',
+                            'sedang diperbaiki'=> 'sedang diperbaiki',
+                            'selesai diperbaiki'=> 'selesai diperbaiki',
+                        ])
+                        ->default('belum diperbaiki')
+                        ->label('Status')
+                        ->required(),
 
-
-                    ->minItems(1)
-                    ->columns(2)
-                    ->required(),
-            Forms\Components\TextInput::make('catatan')
-                ->label('Catatan'),
-
-            Forms\Components\Select::make('Status')
-                ->options([
-                    'belum diperbaiki'=> 'belum diperbaiki',
-                    'sedang diperbaiki'=> 'sedang diperbaiki',
-                    'selesai diperbaiki'=> 'selesai diperbaiki',
-                ])
-                ->default('belum diperbaiki')
-                ->label('Status')
-                ->required(),
-
-            Forms\Components\DatePicker::make('tanggal_service')
-                ->required()
-                ->label('Tanggal Service'),
-
-
+                    Forms\Components\DatePicker::make('tanggal_service')
+                        ->required()
+                        ->label('Tanggal Service'),
         ]);
-
 
     }
 
@@ -178,8 +172,6 @@ class ServiceDetailResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
-
-
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

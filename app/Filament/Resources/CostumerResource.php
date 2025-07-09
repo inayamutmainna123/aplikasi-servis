@@ -43,7 +43,7 @@ class CostumerResource extends Resource
                     ->label('Alamat Costumer'),   
             ]);
     }
-
+    
     public static function table(Table $table): Table
     {
         return $table
@@ -60,9 +60,6 @@ class CostumerResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                
-               
-                
                 ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
