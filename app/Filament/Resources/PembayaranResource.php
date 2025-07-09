@@ -24,10 +24,10 @@ class PembayaranResource extends Resource
 
     protected static ?string $pluralLabel = " Pembayaran";
 
-    protected static ?string $slug = "Pembayaran";
+    protected static ?string $slug = "pembayaran";
 
     protected static ?int $navigationSort = 0;
-    
+
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
     public static function form(Form $form): Form

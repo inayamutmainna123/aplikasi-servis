@@ -19,9 +19,13 @@ use Filament\Forms\Components\ImageUpload;
 class SparepartResource extends Resource
 {
     protected static ?string $model = Sparepart::class;
+
     protected static ?string $pluralLabel = " Sparepart";
-    protected static ?string $slug = "Sparepart";
+
+    protected static ?string $slug = "sparepart";
+
     protected static ?string $navigationGroup = "Data Master";
+
     protected static ?string $navigationIcon = 'heroicon-o-archive-box';
 
     public static function form(Form $form): Form

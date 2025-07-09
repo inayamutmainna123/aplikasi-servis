@@ -18,7 +18,7 @@ class CostumerResource extends Resource
 {
     protected static ?string $model = Costumer::class;
     protected static ?string $pluralLabel = " Costumer";
-    protected static ?string $slug = "Costumer";
+    protected static ?string $slug = "costumer";
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
 
@@ -43,7 +43,7 @@ class CostumerResource extends Resource
                     ->label('Alamat Costumer'),   
             ]);
     }
-    
+
     public static function table(Table $table): Table
     {
         return $table

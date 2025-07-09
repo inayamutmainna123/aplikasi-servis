@@ -17,9 +17,13 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class ServiceItemResource extends Resource
 {
     protected static ?string $model = ServiceItem::class;
+
     protected static ?string $pluralLabel = " Service Item";
-    protected static ?string $slug = "ServiceItem";
+
+    protected static ?string $slug = "service_item";
+
     protected static ?string $navigationGroup = "Data Master";
+
     protected static ?string $navigationIcon = 'heroicon-o-wrench-screwdriver';
 
     public static function form(Form $form): Form
