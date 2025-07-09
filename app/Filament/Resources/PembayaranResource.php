@@ -152,13 +152,13 @@ class PembayaranResource extends Resource
                     ->label('Nama Service'),
                 Tables\Columns\TextColumn::make('Sparepart.nama_sparepart')
                     ->label('Nama Sparepart'),
-                Tables\Columns\TextColumn::make('items.harga_service')
+                Tables\Columns\TextColumn::make('ServiceItem.harga_service')
                     ->label('Harga Service'),
-                Tables\Columns\TextColumn::make('items.harga_sparepart')
+                Tables\Columns\TextColumn::make('Sparepart.harga_sparepart')
                     ->label('Harga Sparepart'),
-                Tables\Columns\TextColumn::make('jumlah_service')
+                Tables\Columns\TextColumn::make('ServiceItem.jumlah_service')
                     ->label('Jumlah Service'),
-                Tables\Columns\TextColumn::make('jumlah_sparepart')
+                Tables\Columns\TextColumn::make('Sparepart.jumlah_sparepart')
                     ->label('Jumlah Sparepart'),
                 Tables\Columns\TextColumn::make('total_harga')
                     ->money('IDR'),
