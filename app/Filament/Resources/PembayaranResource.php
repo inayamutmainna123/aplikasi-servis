@@ -120,8 +120,7 @@ class PembayaranResource extends Resource
                     $set('total_kembali', (double)$state - $total);
                 }),               
 
-            TextInput::make(
-                'total_kembali')
+            TextInput::make('total_kembali')
                 ->numeric()
                 ->readOnly()
                 ->label('Total Kembalian'),

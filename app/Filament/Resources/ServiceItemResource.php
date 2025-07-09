@@ -27,17 +27,17 @@ class ServiceItemResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('nama_service')
-                ->required()
-                ->label('Nama Service')
-                ->maxLength(255),
+                    ->required()
+                    ->label('Nama Service')
+                    ->maxLength(255),
                 Forms\Components\TextInput::make('harga_service')
-                ->required()
-                ->numeric()
-                ->label('Harga Service'),
+                    ->required()
+                    ->numeric()
+                    ->label('Harga Service'),
                 Forms\Components\TextInput::make('deskripsi')
-                ->required()
-                ->label('Deskripsi')
-                ->maxLength(255),
+                    ->required()
+                    ->label('Deskripsi')
+                    ->maxLength(255),
 
             ]);
     }

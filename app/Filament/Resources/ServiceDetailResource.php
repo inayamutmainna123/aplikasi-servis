@@ -101,7 +101,7 @@ class ServiceDetailResource extends Resource
                                 $set('sparepart_id', null);
                             }
                         })
-                        ->required(),
+                                ->required(),
                     Forms\Components\TextInput::make('jumlah')
                         ->numeric()
                         ->label('Jumlah')
@@ -156,19 +156,19 @@ class ServiceDetailResource extends Resource
                         $record->items->pluck('sparepart.nama_sparepart')->filter()->join(', ')
                     ),
                 Tables\Columns\TextColumn::make('tipe_kendaraan')
-                ->label('Tipe Kendaraan'),
+                    ->label('Tipe Kendaraan'),
                 Tables\Columns\TextColumn::make('merek_kendaraan')
-                ->label('Merek Kendaraan'),
+                    ->label('Merek Kendaraan'),
                 Tables\Columns\TextColumn::make('model_kendaraan')
-                ->label('Model Kendaraan'),
+                    ->label('Model Kendaraan'),
                 Tables\Columns\TextColumn::make('plat_kendaraan')
-                ->label('Plat Kendaraan'),
+                    ->label('Plat Kendaraan'),
                 Tables\Columns\TextColumn::make('catatan')
-                ->label('Catatan'),
+                    ->label('Catatan'),
                 Tables\Columns\TextColumn::make('status')
-                ->label('Status'),
+                    ->label('Status'),
                 Tables\Columns\TextColumn::make('tanggal_service')
-                ->label('Tanggal Service'),
+                    ->label('Tanggal Service'),
 
             ])
             ->filters([
@@ -183,7 +183,7 @@ class ServiceDetailResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
