@@ -47,7 +47,3 @@ class ServiceDetail extends Model
 
 
 }
-
-
-
-

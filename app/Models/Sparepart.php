@@ -19,4 +19,3 @@ class Sparepart extends Model
 
 
 }
-
