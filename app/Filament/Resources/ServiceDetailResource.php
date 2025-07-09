@@ -27,16 +27,17 @@ class ServiceDetailResource extends Resource
     protected static ?string $model = ServiceDetail::class;
 
     protected static ?string $pluralLabel = " Service Detail";
+
     protected static ?string $slug = "ServiceDetail";
 
-
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-            Forms\Components\Select::make('costumer_id') 
+            Forms\Components\Select::make('costumer_id')
                 ->relationship('costumer', 'nama_costumer')
                 ->label('Costumer')
                 ->required(),
@@ -49,7 +50,7 @@ class ServiceDetailResource extends Resource
                 ->default('matic')
                 ->label('Tipe Kendaraan')
                 ->required(),
-            
+
             Forms\Components\Select::make('merek_kendaraan')
                 ->options([
                     'yamaha'=> 'Yamaha',
@@ -68,26 +69,27 @@ class ServiceDetailResource extends Resource
                 ->label('Plat Kendaraan'),
 
             Repeater::make('items')
-                ->relationship('items')
+                // ->relationship('items')
                 ->label('Service dan Sparepart')
                 ->schema([
                     Forms\Components\Select::make('service_item_id')
                         ->relationship('serviceItem', 'nama_service')
                         ->label('Nama Service')
                         ->required(),
-            
+
                     Forms\Components\Select::make('sparepart_id')
                         ->label('Nama Sparepart')
-                        ->options(function () {
-                            return Sparepart::pluck('nama_sparepart', 'id');
-                        })
-                        ->reactive()
+                        ->relationship('sparepart', 'nama_sparepart')
+                        // ->options(function () {
+                            // return Sparepart::pluck('nama_sparepart', 'id');
+                        // })
+                        // ->reactive()
                         ->live()
                         ->afterStateUpdated(function ($state, callable $set) {
                             if (!$state) return;
-                        
+
                             $sparepart = Sparepart::find($state);
-                        
+
                             if (!$sparepart || (double) $sparepart->stok_sparepart <= 0) {
                                 Notification::make()
                                     ->title('Stok Habis')
@@ -95,29 +97,27 @@ class ServiceDetailResource extends Resource
                                     ->danger()
                                     ->persistent()
                                     ->send();
-                        
+
                                 $set('sparepart_id', null);
                             }
                         })
-                        
                         ->required(),
-                    
                     Forms\Components\TextInput::make('jumlah')
                         ->numeric()
                         ->label('Jumlah')
-                        ->default(function (Get $get, $state) {
-                            dd($get('sparepart_id'));
-                        }),
-                        
+                        // ->default(function (Get $get, $state) {
+                            // dd($get('sparepart_id'));
+                        // }),
+
                     ])
-                    
-                
+
+
                     ->minItems(1)
                     ->columns(2)
                     ->required(),
             Forms\Components\TextInput::make('catatan')
                 ->label('Catatan'),
-    
+
             Forms\Components\Select::make('Status')
                 ->options([
                     'belum diperbaiki'=> 'belum diperbaiki',
@@ -134,7 +134,7 @@ class ServiceDetailResource extends Resource
 
 
         ]);
-           
+
 
     }
 
@@ -146,13 +146,13 @@ class ServiceDetailResource extends Resource
                     ->label('Costumer'),
                 Tables\Columns\TextColumn::make('service_items')
                     ->label('Nama Service')
-                    ->getStateUsing(fn ($record) => 
+                    ->getStateUsing(fn ($record) =>
                         $record->items->pluck('serviceItem.nama_service')->filter()->join(', ')
                     ),
-                
+
                 Tables\Columns\TextColumn::make('spareparts')
                     ->label('Nama Sparepart')
-                    ->getStateUsing(fn ($record) => 
+                    ->getStateUsing(fn ($record) =>
                         $record->items->pluck('sparepart.nama_sparepart')->filter()->join(', ')
                     ),
                 Tables\Columns\TextColumn::make('tipe_kendaraan')
@@ -169,7 +169,7 @@ class ServiceDetailResource extends Resource
                 ->label('Status'),
                 Tables\Columns\TextColumn::make('tanggal_service')
                 ->label('Tanggal Service'),
-                
+
             ])
             ->filters([
                 //
@@ -178,8 +178,8 @@ class ServiceDetailResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                
-                
+
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

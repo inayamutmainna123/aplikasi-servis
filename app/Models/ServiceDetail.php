@@ -27,20 +27,24 @@ class ServiceDetail extends Model
         'tanggal_service',
     ];
 
-        
+    public function sparepart()
+    {
+        return $this->belongsTo(Sparepart::class, 'sparepart_id');
+    }
+
     public function costumer()
     {
         return $this->belongsTo(Costumer::class);
     }
 
-    
+
     public function items()
     {
         return $this->hasMany(PivotTable::class);
     }
 
-   
-    
+
+
 
 }
 
