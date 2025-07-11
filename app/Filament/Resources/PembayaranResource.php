@@ -49,7 +49,7 @@ class PembayaranResource extends Resource
                     // SERVICE
             Select::make('service_item_id')
                 ->label('Nama Service')
-                ->relationship('ServiceItem', 'nama_service')
+                ->relationship('service_item', 'nama_service')
                 ->searchable()
                 ->preload()
                 ->reactive()

@@ -22,14 +22,15 @@ class PivotTable extends Model
         return $this->belongsTo(ServiceDetail::class);
     }
 
-    public function serviceItem()
+    public function service_item()
     {
-        return $this->belongsTo(ServiceItem::class,"service_item_id");
+        return $this->belongsTo(\App\Models\ServiceItem::class, 'service_item_id');
     }
+
 
     public function sparepart()
     {
-        return $this->belongsTo(Sparepart::class,"sparepart_id");
+        return $this->belongsTo(\App\Models\Sparepart::class, 'sparepart_id');
     }
 
     public function costumer()

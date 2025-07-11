@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('service_detail', function (Blueprint $table) {
             $table->ulid( 'id') ->primary();
-            $table->foreignUlid('service_item_id')->nullable();
-            $table->foreignUlid('sparepart_id')->nullable();
-            $table->foreignUlid('costumer_id')->nullable();
+            $table->foreignUlid('service_item_id');
+            $table->foreignUlid('sparepart_id');
+            $table->foreignUlid('costumer_id');
+            $table->foreignUlid('merek_kendaraan_id');
             $table->string('tipe_kendaraan');
-            $table->string('merek_kendaraan');
             $table->string('model_kendaraan');
             $table->string('plat_kendaraan');
-            $table->double('jumlah');
             $table->text('catatan');
             $table->enum('status' , ['belum diperbaiki', 'sedang diperbaiki', 'selesai diperbaiki']) ->default('belum diperbaiki');
             $table->datetime('tanggal_service');
@@ -36,5 +35,8 @@ return new class extends Migration
         Schema::dropIfExists('service_detail');
     }
 };
+
+
+
 
 

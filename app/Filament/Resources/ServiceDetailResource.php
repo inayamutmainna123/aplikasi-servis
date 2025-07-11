@@ -19,6 +19,7 @@ use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
+use App\Models\PivotTable;
 
 
 
@@ -51,14 +52,8 @@ class ServiceDetailResource extends Resource
                 ->label('Tipe Kendaraan')
                 ->required(),
 
-            Forms\Components\Select::make('merek_kendaraan')
-                ->options([
-                    'yamaha'=> 'Yamaha',
-                    'honda'=> 'Honda',
-                    'suzuki'=> 'Suzuki',
-                    'kawasaki'=> 'Kawasaki',
-                ])
-                ->default('yamaha')
+            Forms\Components\Select::make('merek_kendaraan_id')
+                ->relationship('merekKendaraan', 'merek_kendaraan')
                 ->label('Merek Kendaraan')
                 ->required(),
 
@@ -69,71 +64,58 @@ class ServiceDetailResource extends Resource
                 ->label('Plat Kendaraan'),
 
             Repeater::make('items')
-                // ->relationship('items')
+                ->relationship('items')
                 ->label('Service dan Sparepart')
                 ->schema([
-                    Forms\Components\Select::make('service_item_id')
-                        ->relationship('serviceItem', 'nama_service')
-                        ->label('Nama Service')
-                        ->required(),
 
-                    Forms\Components\Select::make('sparepart_id')
-                        ->label('Nama Sparepart')
-                        ->relationship('sparepart', 'nama_sparepart')
-                        // ->options(function () {
-                            // return Sparepart::pluck('nama_sparepart', 'id');
-                        // })
-                        // ->reactive()
-                        ->live()
-                        ->afterStateUpdated(function ($state, callable $set) {
-                        if (!$state) return;
+            Forms\Components\Select::make('service_item_id')
+                ->label('Nama Service')
+                ->relationship('service_item', 'nama_service') 
+                ->required()
+                ->searchable(),
+                
+            Forms\Components\Select::make('sparepart_id')
+                ->label('Nama Sparepart')
+                ->relationship('sparepart', 'nama_sparepart')
+                ->live()
+                ->afterStateUpdated(function ($state, callable $set) {
+            if (!$state) return;
 
-                        $sparepart = Sparepart::find($state);
+                $sparepart = Sparepart::find($state);
 
-                        if (!$sparepart || (double) $sparepart->stok_sparepart <= 0) {
-                            Notification::make()
-                                ->title('Stok Habis')
-                                ->body("Stok untuk sparepart \"{$sparepart?->nama_sparepart}\" sudah habis.")
-                                ->danger()
-                                ->persistent()
-                                ->send();
+            if (!$sparepart || (double) $sparepart->stok_sparepart <= 0) {
+                Notification::make()
+                ->title('Stok Habis')
+                ->body("Stok untuk sparepart \"{$sparepart?->nama_sparepart}\" sudah habis.")
+                ->danger()
+                ->persistent()
+                ->send();
 
-                            $set('sparepart_id', null);
-                        }
-                        })
-                        ->required(),
-                    Forms\Components\TextInput::make('jumlah')
-                        ->numeric()
-                        ->label('Jumlah')
-                        // ->default(function (Get $get, $state) {
-                            // dd($get('sparepart_id'));
-                        // }),
+                $set('sparepart_id', null);
+            }
+            })
+            ->required(),
+            
+                Forms\Components\TextInput::make('catatan')
+                    ->label('Catatan'),
 
+                Forms\Components\Select::make('Status')
+                    ->options([
+                        'belum diperbaiki'=> 'belum diperbaiki',
+                        'sedang diperbaiki'=> 'sedang diperbaiki',
+                        'selesai diperbaiki'=> 'selesai diperbaiki',
                     ])
-
-
-                        ->minItems(1)
-                        ->columns(2)
-                        ->required(),
-                    Forms\Components\TextInput::make('catatan')
-                        ->label('Catatan'),
-
-                    Forms\Components\Select::make('Status')
-                        ->options([
-                            'belum diperbaiki'=> 'belum diperbaiki',
-                            'sedang diperbaiki'=> 'sedang diperbaiki',
-                            'selesai diperbaiki'=> 'selesai diperbaiki',
-                        ])
                         ->default('belum diperbaiki')
                         ->label('Status')
                         ->required(),
 
-                    Forms\Components\DatePicker::make('tanggal_service')
-                        ->required()
-                        ->label('Tanggal Service'),
+                Forms\Components\DatePicker::make('tanggal_service')
+                        ->label('Tanggal Service')
+                        ->required(),
 
 
-                ]);
+                ])
+            ]);
 
 
     }
@@ -144,13 +126,13 @@ class ServiceDetailResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Costumer'),
-                Tables\Columns\TextColumn::make('service_items')
+                Tables\Columns\TextColumn::make('service_item')
                     ->label('Nama Service')
                     ->getStateUsing(fn ($record) =>
-                        $record->items->pluck('serviceItem.nama_service')->filter()->join(', ')
+                        $record->items->pluck('service_item.nama_service')->filter()->join(', ')
                     ),
 
-                Tables\Columns\TextColumn::make('spareparts')
+                Tables\Columns\TextColumn::make('sparepart')
                     ->label('Nama Sparepart')
                     ->getStateUsing(fn ($record) =>
                         $record->items->pluck('sparepart.nama_sparepart')->filter()->join(', ')
