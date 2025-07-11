@@ -60,6 +60,9 @@ class ServiceItemResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -81,6 +84,7 @@ class ServiceItemResource extends Resource
             'index' => Pages\ListServiceItems::route('/'),
             'create' => Pages\CreateServiceItem::route('/create'),
             'edit' => Pages\EditServiceItem::route('/{record}/edit'),
+           
         ];
     }
 }
