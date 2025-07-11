@@ -20,6 +20,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use App\Models\PivotTable;
+use Filament\Tables\Actions\ActionGroup;
 
 
 
@@ -126,11 +127,8 @@ class ServiceDetailResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Costumer'),
-                Tables\Columns\TextColumn::make('service_item')
-                    ->label('Nama Service')
-                    ->getStateUsing(fn ($record) =>
-                        $record->items->pluck('service_item.nama_service')->filter()->join(', ')
-                    ),
+                Tables\Columns\TextColumn::make('service_item_id.nama_servis')
+                    ->label('Nama Service'),
 
                 Tables\Columns\TextColumn::make('sparepart')
                     ->label('Nama Sparepart')
@@ -157,9 +155,11 @@ class ServiceDetailResource extends Resource
                 //
             ])
             ->actions([
+                ActionGroup::make([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                ])
 
                 
             ])

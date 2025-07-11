@@ -17,6 +17,8 @@ use Filament\Forms\Set;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Filament\Tables\Actions\ActionGroup;
+
 
 class PembayaranResource extends Resource
 {
@@ -138,19 +140,19 @@ class PembayaranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('Costumer.nama_costumer')
+                Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label(' Nama Customer'),
-                Tables\Columns\TextColumn::make('ServiceItem.nama_service')
+                Tables\Columns\TextColumn::make('service_item.nama_service')
                     ->label('Nama Service'),
-                Tables\Columns\TextColumn::make('Sparepart.nama_sparepart')
+                Tables\Columns\TextColumn::make('sparepart.nama_sparepart')
                     ->label('Nama Sparepart'),
-                Tables\Columns\TextColumn::make('ServiceItem.harga_service')
+                Tables\Columns\TextColumn::make('service_item.harga_service')
                     ->label('Harga Service'),
-                Tables\Columns\TextColumn::make('Sparepart.harga_sparepart')
+                Tables\Columns\TextColumn::make('sparepart.harga_sparepart')
                     ->label('Harga Sparepart'),
-                Tables\Columns\TextColumn::make('ServiceItem.jumlah_service')
+                Tables\Columns\TextColumn::make('service_item.jumlah_service')
                     ->label('Jumlah Service'),
-                Tables\Columns\TextColumn::make('Sparepart.jumlah_sparepart')
+                Tables\Columns\TextColumn::make('sparepart.jumlah_sparepart')
                     ->label('Jumlah Sparepart'),
                 Tables\Columns\TextColumn::make('total_harga')
                     ->money('IDR'),
@@ -164,9 +166,11 @@ class PembayaranResource extends Resource
                     ->date(),
             ])
             ->actions([
+                ActionGroup::make([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(), 
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),

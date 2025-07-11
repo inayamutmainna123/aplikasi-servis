@@ -11,6 +11,7 @@ class Sparepart extends Model
    protected $table = "Sparepart";
 
    protected $fillable = [
+      'gambar',
       'nama_sparepart',
       'harga_sparepart',
       'stok_sparepart',

@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\ImageUpload;
+use Filament\Tables\Actions\ActionGroup;
+
 
 
 class SparepartResource extends Resource
@@ -32,6 +34,10 @@ class SparepartResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\FileUpload::make('gambar')
+                    ->directory('sparepart')
+                    ->visibility('public')
+                    ->label('Foto'),
                 Forms\Components\TextInput::make('nama_sparepart')
                     ->required()
                     ->label('Nama Sparepart')
@@ -55,6 +61,11 @@ class SparepartResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\ImageColumn::make('gambar')
+                    ->visibility('public')
+                    ->label('Foto')
+                    ->circular()
+                    ->size(40),
                 Tables\Columns\TextColumn::make('nama_sparepart')
                     ->label('Nama Sparepart'),
                 Tables\Columns\TextColumn::make('harga_sparepart')
@@ -68,9 +79,11 @@ class SparepartResource extends Resource
                 //
             ])
             ->actions([
+                ActionGroup::make([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
