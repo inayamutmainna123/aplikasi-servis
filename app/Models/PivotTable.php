@@ -30,9 +30,8 @@ class PivotTable extends Model
 
     public function sparepart()
     {
-        return $this->belongsTo(\App\Models\Sparepart::class, 'sparepart_id');
+        return $this->belongsTo(Sparepart::class,'sparepart_id');
     }
-
     public function costumer()
     {
         return $this->belongsTo(Costumer::class);

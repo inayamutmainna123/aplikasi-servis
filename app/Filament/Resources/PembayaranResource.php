@@ -62,7 +62,8 @@ class PembayaranResource extends Resource
             TextInput::make('harga_service')
                 ->numeric()
                 ->readOnly()
-                ->label('Harga Service'),
+                ->label('Harga Service')
+                ->default(fn (Get $get) => $get('harga_service')),
             TextInput::make('jumlah_service')
                 ->numeric()
                 ->default(0)
@@ -81,7 +82,9 @@ class PembayaranResource extends Resource
             TextInput::make('harga_sparepart')
                 ->numeric()
                 ->readOnly()
-                ->label('Harga Sparepart'),
+                ->label('Harga Sparepart')
+                ->default(fn (Get $get) => $get('harga_sparepart')),
+
                 
 
             TextInput::make('jumlah_sparepart')
@@ -142,18 +145,56 @@ class PembayaranResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label(' Nama Customer'),
-                Tables\Columns\TextColumn::make('service_item.nama_service')
-                    ->label('Nama Service'),
-                Tables\Columns\TextColumn::make('sparepart.nama_sparepart')
-                    ->label('Nama Sparepart'),
-                Tables\Columns\TextColumn::make('service_item.harga_service')
-                    ->label('Harga Service'),
+
+                    Tables\Columns\TextColumn::make('items')
+                    ->label('Nama Service')
+                    ->getStateUsing(fn ($record) =>
+                    $record->items
+                    ->map(fn ($item) => optional($item->service_item)->nama_service)
+                    ->filter()
+                    ->join(', ')
+                    ),
+
+                Tables\Columns\TextColumn::make('items_sparepart')
+                    ->label('Nama Sparepart')
+                    ->getStateUsing(fn ($record) =>
+                    $record->items
+                    ->map(fn ($item) => optional($item->sparepart)->nama_sparepart)
+                    ->filter()
+                    ->join(', ')
+                    ),
+
+                Tables\Columns\TextColumn::make('items.harga_service')
+                    ->label('Harga Service')
+                    ->money('IDR')
+                    ->getStateUsing(fn ($record) =>
+                    $record->items
+                    ->map(fn ($item) => optional($item->service_item)->harga_service)
+                    ->filter()
+                    ->join(', ')
+                    ),
+
                 Tables\Columns\TextColumn::make('sparepart.harga_sparepart')
-                    ->label('Harga Sparepart'),
-                Tables\Columns\TextColumn::make('service_item.jumlah_service')
-                    ->label('Jumlah Service'),
-                Tables\Columns\TextColumn::make('sparepart.jumlah_sparepart')
-                    ->label('Jumlah Sparepart'),
+                    ->label('Harga Sparepart')
+                    ->money('IDR')
+                    ->getStateUsing(fn ($record) =>
+                    $record->items
+                    ->map(fn ($item) => optional($item->sparepart)->harga_sparepart)
+                    ->filter()
+                    ->join(', ')
+                    ),
+
+                Tables\Columns\TextColumn::make('items_jumlah_service')
+                    ->label('Jumlah Service')
+                    ->getStateUsing(fn ($record) =>
+                        $record->items->sum('jumlah_service')
+                    ),
+
+               Tables\Columns\TextColumn::make('items_jumlah_sparepart')
+                    ->label('Jumlah Sparepart')
+                    ->getStateUsing(fn ($record) =>
+                        $record->items->sum('jumlah_sparepart')
+                    ),
                 Tables\Columns\TextColumn::make('total_harga')
                     ->money('IDR'),
                 Tables\Columns\TextColumn::make('total_bayar')

@@ -16,10 +16,6 @@ class Pembayaran extends Model
         'costumer_id',
         'sparepart_id',
         'service_item_id',
-        'nama_service',
-        'nama_sparepart',
-        'harga_service',
-        'harga_sparepart',
         'jumlah_sparepart',
         'jumlah_service',
         'total_harga',
@@ -34,17 +30,17 @@ class Pembayaran extends Model
         'tanggal_pembayaran' => 'datetime',
     ];
 
-    public function Costumer()
+    public function costumer()
     {
         return $this->belongsTo(Costumer::class,'costumer_id');
     }
 
-    public function Sparepart()
+    public function sparepart()
     {
         return $this->belongsTo(Sparepart::class, 'sparepart_id');
     }
 
-    public function ServiceItem()
+    public function service_item()
     {
         return $this->belongsTo(ServiceItem::class, 'service_item_id');
     }

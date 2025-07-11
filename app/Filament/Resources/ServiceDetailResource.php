@@ -54,7 +54,7 @@ class ServiceDetailResource extends Resource
                 ->required(),
 
             Forms\Components\Select::make('merek_kendaraan_id')
-                ->relationship('merekKendaraan', 'merek_kendaraan')
+                ->relationship('merek_kendaraan', 'merek_kendaraan')
                 ->label('Merek Kendaraan')
                 ->required(),
 
@@ -64,20 +64,24 @@ class ServiceDetailResource extends Resource
             Forms\Components\TextInput::make('plat_kendaraan')
                 ->label('Plat Kendaraan'),
 
+            Forms\Components\DatePicker::make('tanggal_service')
+                ->required(),
+            Forms\Components\TextInput::make('catatan')
+                ->label('Catatan'),
+
             Repeater::make('items')
                 ->relationship('items')
                 ->label('Service dan Sparepart')
                 ->schema([
 
             Forms\Components\Select::make('service_item_id')
-                ->label('Nama Service')
-                ->relationship('service_item', 'nama_service') 
-                ->required()
-                ->searchable(),
+                ->relationship('service_item', 'nama_service')
+                ->label('Service')
+                ->required(),
                 
             Forms\Components\Select::make('sparepart_id')
-                ->label('Nama Sparepart')
                 ->relationship('sparepart', 'nama_sparepart')
+                ->label('Sparepart')
                 ->live()
                 ->afterStateUpdated(function ($state, callable $set) {
             if (!$state) return;
@@ -96,10 +100,6 @@ class ServiceDetailResource extends Resource
             }
             })
             ->required(),
-            
-                Forms\Components\TextInput::make('catatan')
-                    ->label('Catatan'),
-
                 Forms\Components\Select::make('Status')
                     ->options([
                         'belum diperbaiki'=> 'belum diperbaiki',
@@ -110,13 +110,11 @@ class ServiceDetailResource extends Resource
                         ->label('Status')
                         ->required(),
 
-                Forms\Components\DatePicker::make('tanggal_service')
-                        ->label('Tanggal Service')
-                        ->required(),
-
-
+                
                 ])
+
             ]);
+
 
 
     }
@@ -127,9 +125,14 @@ class ServiceDetailResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Costumer'),
-                Tables\Columns\TextColumn::make('service_item_id.nama_servis')
-                    ->label('Nama Service'),
-
+                Tables\Columns\TextColumn::make('items')
+                    ->label('Nama Service')
+                    ->getStateUsing(fn ($record) =>
+                    $record->items
+                    ->map(fn ($item) => optional($item->service_item)->nama_service)
+                    ->filter()
+                    ->join(', ')
+                    ),
                 Tables\Columns\TextColumn::make('sparepart')
                     ->label('Nama Sparepart')
                     ->getStateUsing(fn ($record) =>
@@ -137,8 +140,9 @@ class ServiceDetailResource extends Resource
                     ),
                 Tables\Columns\TextColumn::make('tipe_kendaraan')
                     ->label('Tipe Kendaraan'),
-                Tables\Columns\TextColumn::make('merek_kendaraan')
-                    ->label('Merek Kendaraan'),
+                Tables\Columns\TextColumn::make('merek_kendaraan.merek_kendaraan')
+                    ->label('Merek Kendaraan')
+                    ->getStateUsing(fn ($record) => optional($record->merek_kendaraan)->merek_kendaraan),                 
                 Tables\Columns\TextColumn::make('model_kendaraan')
                     ->label('Model Kendaraan'),
                 Tables\Columns\TextColumn::make('plat_kendaraan')

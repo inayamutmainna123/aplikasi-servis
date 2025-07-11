@@ -29,14 +29,14 @@ class ServiceDetail extends Model
 
     public function sparepart()
     {
-        return $this->belongsTo(Sparepart::class, 'sparepart_id');
+        return $this->belongsTo(Sparepart::class,'sparepart_id');
     }
 
     public function service_item()
     {
-        return $this->belongsTo(ServiceItem::class, 'service_item_id');
+        return $this->belongsTo(ServiceItem::class,'service_item_id');
     }
-
+    
     public function costumer()
     {
         return $this->belongsTo(Costumer::class,'costumer_id');

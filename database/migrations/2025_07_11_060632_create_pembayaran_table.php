@@ -12,16 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('pembayaran', function (Blueprint $table) {
-            $table->ulid( 'id')->primary();
-            $table->foreignUlid('costumer_id') ->nullable();
-            $table->foreignUlid('sparepart_id')->nullable();
-            $table->foreignUlid('service_item_id')->nullable();
-            $table->string('nama_service');
-            $table->string('nama_sparepart');
-            $table->double('harga_service');
-            $table->double('harga_sparepart');
-            $table->double('jumlah_sparepart');
-            $table->double('jumlah_service');
+            $table->ulid( 'id')->primary()->index();
+            $table->foreignUlid('costumer_id') ->nullable()->index();
+            $table->foreignUlid('sparepart_id')->nullable()->index();
+            $table->foreignUlid('service_item_id')->nullable()->index();
+            $table->double('jumlah_sparepart')->default(0);
+            $table->double('jumlah_service')->default(0);
             $table->double('total_harga')->nullable();
             $table->double('total_bayar')->nullable();
             $table->double('total_kembali')->default(0);
@@ -40,7 +36,3 @@ return new class extends Migration
         Schema::dropIfExists('pembayaran');
     }
 };
-
-
-
-
