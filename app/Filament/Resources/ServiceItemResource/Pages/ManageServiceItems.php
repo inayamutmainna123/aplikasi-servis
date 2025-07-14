@@ -4,9 +4,9 @@ namespace App\Filament\Resources\ServiceItemResource\Pages;
 
 use App\Filament\Resources\ServiceItemResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListServiceItems extends ListRecords
+class ManageServiceItems extends ManageRecords
 {
     protected static string $resource = ServiceItemResource::class;
 

@@ -4,9 +4,9 @@ namespace App\Filament\Resources\MerekKendaraanResource\Pages;
 
 use App\Filament\Resources\MerekKendaraanResource;
 use Filament\Actions;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListMerekKendaraans extends ListRecords
+class ManageMerekKendaraans extends ManageRecords
 {
     protected static string $resource = MerekKendaraanResource::class;
 

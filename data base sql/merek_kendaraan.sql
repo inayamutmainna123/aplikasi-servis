@@ -1,1 +1,0 @@
-INSERT INTO `merek_kendaraan` (`id`, `kode_merek_kendaraan`, `merek_kendaraan`, `created_at`, `updated_at`) VALUES ('01jzdkgrtjm0hbhez4zq9y20fe', 'YHM', 'Yamaha', '2025-07-05 15:33:15', '2025-07-05 15:33:15');

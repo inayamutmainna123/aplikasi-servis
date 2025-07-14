@@ -11,10 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('merek_kendaraan', function (Blueprint $table) {
-            $table->ulid( 'id');
-            $table->string('kode_merek_kendaraan');
-            $table->string('merek_kendaraan');
+        Schema::create('sparepart', function (Blueprint $table) {
+            $table->ulid('id')->primary();
+            $table->string('gambar')->nullable();
+            $table->string('nama_sparepart');
+            $table->string('harga_sparepart');
+            $table->double('stok_sparepart');
+            $table->text('deskripsi');
             $table->timestamps();
         });
     }
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('merek_kendaraan');
+        Schema::dropIfExists('sparepart');
     }
 };

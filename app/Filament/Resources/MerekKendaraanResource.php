@@ -30,14 +30,19 @@ class MerekKendaraanResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('kode_merek_kendaraan')
-                ->required()
-                ->maxLength(10)
-                ->label('Kode Merek Kendaraan'),
-                Forms\Components\TextInput::make('merek_kendaraan')
-                ->required()
-                ->maxLength(255)
-                ->label('Nama Merek'),
+                Forms\Components\Section::make('')
+                    ->schema([
+                        Forms\Components\TextInput::make('kode_merek_kendaraan')
+                            ->required()
+                            ->maxLength(10)
+                            ->inlineLabel()
+                            ->label('Kode'),
+                        Forms\Components\TextInput::make('merek_kendaraan')
+                            ->required()
+                            ->inlineLabel()
+                            ->maxLength(255)
+                            ->label('Merek'),
+                    ]),
             ]);
     }
 
@@ -45,18 +50,21 @@ class MerekKendaraanResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('kode_merek_kendaraan'),
-                Tables\Columns\TextColumn::make('merek_kendaraan'),
+                Tables\Columns\TextColumn::make('kode_merek_kendaraan')
+                    ->label('Kode'),
+                Tables\Columns\TextColumn::make('merek_kendaraan')
+                    ->label('Merek'),
             ])
+
             ->filters([
                 //
             ])
             ->actions([
                 ActionGroup::make([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                ]),
-
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -65,19 +73,10 @@ class MerekKendaraanResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMerekKendaraans::route('/'),
-            'create' => Pages\CreateMerekKendaraan::route('/create'),
-            'edit' => Pages\EditMerekKendaraan::route('/{record}/edit'),
+            'index' => Pages\ManageMerekKendaraans::route('/'),
         ];
     }
 }

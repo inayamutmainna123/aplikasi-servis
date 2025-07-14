@@ -1,2 +1,0 @@
-INSERT INTO `sparepart` (`id`, `nama_sparepart`, `harga_sparepart`, `stok_sparepart`, `deskripsi`, `created_at`, `updated_at`) VALUES ('01jzdk5v4btrrvryjf3jhbkm79', 'oli mpx 1 1L', '48000', 0, 'oke', '2025-07-05 15:27:17', '2025-07-05 21:18:16');
-INSERT INTO `sparepart` (`id`, `nama_sparepart`, `harga_sparepart`, `stok_sparepart`, `deskripsi`, `created_at`, `updated_at`) VALUES ('01jze6kk8rgn2pj2demq34hw96', 'oli mpx 1 0,8L', '70000', 1, 'oke', '2025-07-05 21:06:50', '2025-07-05 21:06:50');

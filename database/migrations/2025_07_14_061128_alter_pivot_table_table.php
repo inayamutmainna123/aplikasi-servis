@@ -11,19 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('pembayaran', function (Blueprint $table) {
-            $table->ulid( 'id')->primary();
+        Schema::create("pivot_table", function (Blueprint $table) {
+            $table->ulid('id')->primary();
             $table->foreignUlid('costumer_id')->nullable();
             $table->foreignUlid('sparepart_id')->nullable();
             $table->foreignUlid('service_item_id')->nullable();
+            $table->foreignUlid('service_detail_id')->nullable();
+            $table->foreignUlid('pembayaran_id')->nullable();
+            $table->double('harga_service')->nullable();
+            $table->double('harga_sparepart')->nullable();
             $table->double('jumlah_sparepart')->nullable();
             $table->double('jumlah_service')->nullable();
-            $table->double('total_harga')->nullable();
-            $table->double('total_bayar')->nullable();
-            $table->double('total_kembali')->default(0);
-            $table->enum('status', ['belum lunas','lunas'])->default('belum lunas');
-            $table->enum('metode_pembayaran', ['cash'])->default('cash');
-            $table->datetime('tanggal_pembayaran');
             $table->timestamps();
         });
     }
@@ -33,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pembayaran');
+        //
     }
 };

@@ -14,6 +14,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Forms\Components\Section;
+
+
 
 class CostumerResource extends Resource
 {
@@ -27,21 +30,37 @@ class CostumerResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama_costumer')
-                    ->required()
-                    ->label('Nama Costumer')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email_costumer')
-                    ->email()
-                    ->required()
-                    ->label('Email Costumer'),
-                Forms\Components\TextInput::make('no_hp_costumer')
-                    ->tel()
-                    ->required()
-                    ->label('No HP Costumer'),
-                Forms\Components\TextInput::make('alamat_costumer') 
-                    ->required()
-                    ->label('Alamat Costumer'),   
+                Forms\Components\Section::make('')
+                    ->aside()
+                    ->columnSpan('full')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama_costumer')
+                            ->required()
+                            ->columnSpan('full')
+                            ->inlineLabel()
+                            ->label('Nama')
+                            ->columns(1),
+                        Forms\Components\TextInput::make('email_costumer')
+                            ->email()
+                            ->required()
+                            ->label('Email')
+                            ->columnSpan('full')
+                            ->inlineLabel()
+                            ->columns(1),
+                        Forms\Components\TextInput::make('no_hp_costumer')
+                            ->tel()
+                            ->required()
+                            ->label('No HP')
+                            ->columnSpan('full')
+                            ->inlineLabel()
+                            ->columns(1),
+                        Forms\Components\TextArea::make('alamat_costumer')
+                            ->required()
+                            ->label('Alamat')
+                            ->columnSpan('full')
+                            ->inlineLabel()
+                            ->columns(1),
+                    ])
             ]);
     }
 
@@ -49,42 +68,37 @@ class CostumerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_costumer'),
-                Tables\Columns\TextColumn::make('email_costumer'),
-                Tables\Columns\TextColumn::make('no_hp_costumer'),
-                Tables\Columns\TextColumn::make('alamat_costumer'),
+                Tables\Columns\TextColumn::make('nama_costumer')
+                    ->label('Nama'),
+                Tables\Columns\TextColumn::make('email_costumer')
+                    ->label('Email'),
+                Tables\Columns\TextColumn::make('no_hp_costumer')
+                    ->label('No HP'),
+                Tables\Columns\TextColumn::make('alamat_costumer')
+                    ->label('Alamat'),
             ])
+
             ->filters([
                 //
             ])
             ->actions([
                 ActionGroup::make([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
                 ])
             ])
-                
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCostumers::route('/'),
-            'create' => Pages\CreateCostumer::route('/create'),
-            'edit' => Pages\EditCostumer::route('/{record}/edit'),
+            'index' => Pages\ManageCostumers::route('/'),
         ];
     }
 }

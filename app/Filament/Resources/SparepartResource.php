@@ -15,8 +15,9 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Forms\Components\ImageUpload;
 use Filament\Tables\Actions\ActionGroup;
-
-
+use Filament\Tables\Actions\Action;
+use Filament\Forms\Components\RichEditor;
+use Filament\Support\RawJs;
 
 class SparepartResource extends Resource
 {
@@ -34,26 +35,44 @@ class SparepartResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\FileUpload::make('gambar')
-                    ->directory('sparepart')
-                    ->visibility('public')
-                    ->label('Foto'),
-                Forms\Components\TextInput::make('nama_sparepart')
-                    ->required()
-                    ->label('Nama Sparepart')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('harga_sparepart')
-                    ->required()
-                    ->numeric()
-                    ->label('Harga Sparepart'),
-                Forms\Components\TextInput::make('stok_sparepart')
-                    ->required()
-                    ->numeric()
-                    ->label('Stok Sparepart'),
-                Forms\Components\TextInput::make('deskripsi')
-                    ->required()
-                    ->label('Deskripsi')
-                    ->maxLength(255),
+                Forms\Components\Section::make('')
+                    ->schema([
+                        Forms\Components\FileUpload::make('gambar')
+                            ->directory('sparepart')
+                            ->columnSpan('full')
+                            ->inlineLabel('1')
+                            ->visibility('public')
+                            ->label('Foto'),
+                        Forms\Components\TextInput::make('nama_sparepart')
+                            ->required()
+                            ->label('Nama Sparepart')
+                            ->columnSpan('full')
+                            ->inlineLabel('1')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('harga_sparepart')
+                            ->required()
+                            ->prefix('Rp')
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->numeric()
+                            ->live(debounce: 700)
+                            ->label('Harga Sparepart')
+                            ->columnSpan('full')
+                            ->inlineLabel('3'),
+                        Forms\Components\TextInput::make('stok_sparepart')
+                            ->required()
+                            ->numeric()
+                            ->label('Stok Sparepart')
+                            ->columnSpan('full')
+                            ->inlineLabel('3'),
+                        Forms\Components\RichEditor::make('deskripsi')
+                            ->required()
+                            ->label('Deskripsi')
+                            ->maxLength(255)
+                            ->inlineLabel('3')
+                            ->columnSpan('full'),
+
+                    ])
             ]);
     }
 
@@ -69,25 +88,27 @@ class SparepartResource extends Resource
                 Tables\Columns\TextColumn::make('nama_sparepart')
                     ->label('Nama Sparepart'),
                 Tables\Columns\TextColumn::make('harga_sparepart')
-                    ->label('Harga Sparepart'),
+                    ->label('Harga Sparepart')
+                    ->money('IDR'),
                 Tables\Columns\TextColumn::make('stok_sparepart')
                     ->label('Stok Sparepart'),
                 Tables\Columns\TextColumn::make('deskripsi')
-                    ->label('Deskripsi'),
+                    ->label('Deskripsi')
+                    ->html(),
             ])
             ->filters([
                 //
             ])
             ->actions([
                 ActionGroup::make([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
                 ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -98,15 +119,15 @@ class SparepartResource extends Resource
             //
         ];
     }
-    
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListSpareparts::route('/'),
             'create' => Pages\CreateSparepart::route('/create'),
             'edit' => Pages\EditSparepart::route('/{record}/edit'),
-            
-            
+
+
         ];
     }
 }

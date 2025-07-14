@@ -32,7 +32,7 @@ class Pembayaran extends Model
 
     public function costumer()
     {
-        return $this->belongsTo(Costumer::class,'costumer_id');
+        return $this->belongsTo(Costumer::class, 'costumer_id');
     }
 
     public function sparepart()
@@ -47,8 +47,6 @@ class Pembayaran extends Model
 
     public function items()
     {
-        return $this->hasMany(PivotTable::class,'pembayaran_id');
+        return $this->hasMany(PivotTable::class, 'pembayaran_id');
     }
-
-    
 }

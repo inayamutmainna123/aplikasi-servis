@@ -1,1 +1,0 @@
-INSERT INTO `costumer` (`id`, `nama_costumer`, `email_costumer`, `no_hp_costumer`, `alamat_costumer`, `created_at`, `updated_at`) VALUES ('01jzdbqdmkatgqnkny64vg4x47', 'Risma', 'risma@gmail.com', '0859176702', 'anggana', '2025-07-05 13:17:04', '2025-07-05 13:17:04');

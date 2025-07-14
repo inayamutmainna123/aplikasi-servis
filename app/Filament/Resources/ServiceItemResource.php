@@ -13,8 +13,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Models\PivotTable;
+use Filament\Actions\ActionGroup as ActionsActionGroup;
+use Filament\Actions\Modal\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
-
+use Filament\Forms\Components\RichEditor;
+use Filament\Support\RawJs;
 
 class ServiceItemResource extends Resource
 {
@@ -32,19 +35,26 @@ class ServiceItemResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama_service')
-                    ->required()
-                    ->label('Nama Service')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('harga_service')
-                    ->required()
-                    ->numeric()
-                    ->label('Harga Service'),
-                Forms\Components\TextInput::make('deskripsi')
-                    ->required()
-                    ->label('Deskripsi')
-                    ->maxLength(255),
+                Forms\Components\Section::make('')
+                    ->schema([
+                        Forms\Components\TextInput::make('nama_service')
+                            ->required()
+                            ->label('Nama Service')
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('harga_service')
+                            ->required()
+                            ->prefix('Rp')
+                            // ->numeric()
+                            ->mask(RawJs::make('$money($input)'))
+                            ->stripCharacters(',')
+                            ->numeric()
+                            ->label('Harga Service'),
+                        Forms\Components\RichEditor::make('deskripsi')
+                            ->required()
+                            ->label('Deskripsi')
+                            ->maxLength(255),
 
+                    ]),
             ]);
     }
 
@@ -53,19 +63,22 @@ class ServiceItemResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('nama_service'),
-                Tables\Columns\TextColumn::make('harga_service'),
-                Tables\Columns\TextColumn::make('deskripsi'),
+                Tables\Columns\TextColumn::make('harga_service')
+                    ->money('IDR'),
+                Tables\Columns\TextColumn::make('deskripsi')
+                    ->html(),
             ])
+
             ->filters([
                 //
             ])
+
             ->actions([
                 ActionGroup::make([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                ]),
-                
-
+                    Tables\Actions\EditAction::make(),
+                    Tables\Actions\ViewAction::make(),
+                    Tables\Actions\DeleteAction::make(),
+                ])
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -74,20 +87,10 @@ class ServiceItemResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListServiceItems::route('/'),
-            'create' => Pages\CreateServiceItem::route('/create'),
-            'edit' => Pages\EditServiceItem::route('/{record}/edit'),
-           
+            'index' => Pages\ManageServiceItems::route('/'),
         ];
     }
 }
