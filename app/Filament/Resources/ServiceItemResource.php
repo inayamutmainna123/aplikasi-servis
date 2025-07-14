@@ -45,8 +45,7 @@ class ServiceItemResource extends Resource
                             ->required()
                             ->prefix('Rp')
                             // ->numeric()
-                            ->mask(RawJs::make('$money($input)'))
-                            ->stripCharacters(',')
+                            ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->numeric()
                             ->label('Harga Service'),
                         Forms\Components\RichEditor::make('deskripsi')

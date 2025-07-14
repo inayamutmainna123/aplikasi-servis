@@ -70,8 +70,7 @@ class PembayaranResource extends Resource
                             }),
                         Forms\Components\TextInput::make('harga_service')
                             ->prefix('Rp')
-                            // ->mask(RawJs::make('$money($input)'))
-                            // ->stripCharacters(',')
+                            ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->numeric()
                             ->label('Harga Service')
                             ->columnSpan('full')
@@ -97,8 +96,7 @@ class PembayaranResource extends Resource
                             }),
                         Forms\Components\TextInput::make('harga_sparepart')
                             ->prefix('Rp')
-                            // ->mask(RawJs::make('$money($input)'))
-                            // ->stripCharacters(',')
+                            ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->numeric()
                             ->live(debounce: 700)
                             ->readOnly()
@@ -148,14 +146,13 @@ class PembayaranResource extends Resource
                         Forms\Components\TextInput::make('total_harga')
                             //->readOnly()
                             ->prefix('Rp')
-                            // ->mask(RawJs::make('$money($input)'))
-                            // ->stripCharacters(',')
+                            ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->numeric()
                             ->live(debounce: 700)
                             ->label('Total Harga'),
                         Forms\Components\TextInput::make('total_bayar')
                             ->reactive()
-                            // ->prefix('Rp')
+                            ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->label('Total Bayar')
                             ->afterStateUpdated(function ($state, Set $set, Get $get) {
                                 $total = (float)($get('total_harga') ?? 0);
@@ -164,10 +161,9 @@ class PembayaranResource extends Resource
                         Forms\Components\TextInput::make('total_kembali')
                             //->readOnly()
                             ->prefix('Rp')
-                            // ->mask(RawJs::make('$money($input)'))
-                            // ->stripCharacters(',')
                             ->numeric()
                             ->live(debounce: 700)
+                            ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->label('Total Kembalian'),
                         Forms\Components\Select::make('status')
                             ->options([
