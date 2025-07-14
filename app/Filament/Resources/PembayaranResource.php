@@ -49,49 +49,49 @@ class PembayaranResource extends Resource
                 ->relationship('items')
                 ->schema([
                     // SERVICE
-            Select::make('service_item_id')
-                ->label('Nama Service')
-                ->relationship('service_item', 'nama_service')
-                ->searchable()
-                ->preload()
-                ->reactive()
-                ->afterStateUpdated(function ($state, Set $set, Get $get) {
-                $harga_service = ServiceItem::find($state)?->harga_service ?? 0;
-                $set('harga_service', $harga_service);
-                    }),           
-            TextInput::make('harga_service')
-                ->numeric()
-                ->readOnly()
-                ->label('Harga Service')
-                ->default(fn (Get $get) => $get('harga_service')),
-            TextInput::make('jumlah_service')
-                ->numeric()
-                ->default(0)
-                ->reactive(),
-            Select::make('sparepart_id')
-                ->label('Nama Sparepart')
-                ->relationship('Sparepart', 'nama_sparepart')
-                ->options(fn () => Sparepart::pluck('nama_sparepart', 'id')) 
-                ->searchable()
-                ->preload()
-                ->reactive()
-                ->afterStateUpdated(function ($state, Set $set, Get $get) {
-                $harga_sparepart = Sparepart::find($state)?->harga_sparepart ?? 0;
-                $set('harga_sparepart', $harga_sparepart);
-                    }),                
-            TextInput::make('harga_sparepart')
-                ->numeric()
-                ->readOnly()
-                ->label('Harga Sparepart')
-                ->default(fn (Get $get) => $get('harga_sparepart')),
+                    Select::make('service_item_id')
+                        ->label('Nama Service')
+                        ->relationship('service_item', 'nama_service')
+                        ->searchable()
+                        ->preload()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $harga_service = ServiceItem::find($state)?->harga_service ?? 0;
+                        $set('harga_service', $harga_service);
+                            }),           
+                    TextInput::make('harga_service')
+                        ->numeric()
+                        // ->readOnly()
+                        ->label('Harga Service')
+                        ->default(fn (Get $get) => $get('harga_service')),
+                    TextInput::make('jumlah_service')
+                        ->numeric()
+                        // ->default(0)
+                        ->reactive(),
+                    Select::make('sparepart_id')
+                        ->label('Nama Sparepart')
+                        ->relationship('Sparepart', 'nama_sparepart')
+                        ->options(fn () => Sparepart::pluck('nama_sparepart', 'id')) 
+                        ->searchable()
+                        ->preload()
+                        ->reactive()
+                        ->afterStateUpdated(function ($state, Set $set, Get $get) {
+                        $harga_sparepart = Sparepart::find($state)?->harga_sparepart ?? 0;
+                        $set('harga_sparepart', $harga_sparepart);
+                            }),                
+                    TextInput::make('harga_sparepart')
+                        ->numeric()
+                        ->readOnly()
+                        ->label('Harga Sparepart')
+                        ->default(fn (Get $get) => $get('harga_sparepart')),
 
-                
+                        
 
-            TextInput::make('jumlah_sparepart')
-                ->numeric()
-                ->default(0)
-                ->reactive(),
-            ])
+                    TextInput::make('jumlah_sparepart')
+                        ->numeric()
+                        ->default(0)
+                        ->reactive(),
+                    ])
                 ->columns(3)
                 ->reactive()
                 ->afterStateUpdated(function (Get $get, Set $set) {
