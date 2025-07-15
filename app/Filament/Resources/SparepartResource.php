@@ -18,6 +18,7 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\RichEditor;
 use Filament\Support\RawJs;
+use Filament\Support\Enums\FontWeight;
 
 class SparepartResource extends Resource
 {
@@ -45,7 +46,8 @@ class SparepartResource extends Resource
                             ->label('Foto'),
                         Forms\Components\TextInput::make('nama_sparepart')
                             ->required()
-                            ->label('Nama Sparepart')
+                            ->label('Nama ')
+                            ->weight(FontWeight::Bold)
                             ->columnSpan('full')
                             ->inlineLabel('1')
                             ->maxLength(255),
@@ -55,13 +57,13 @@ class SparepartResource extends Resource
                             ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->numeric()
                             ->live(debounce: 700)
-                            ->label('Harga Sparepart')
+                            ->label('Harga')
                             ->columnSpan('full')
                             ->inlineLabel('3'),
                         Forms\Components\TextInput::make('stok_sparepart')
                             ->required()
                             ->numeric()
-                            ->label('Stok Sparepart')
+                            ->label('Stok')
                             ->columnSpan('full')
                             ->inlineLabel('3'),
                         Forms\Components\RichEditor::make('deskripsi')
@@ -79,18 +81,21 @@ class SparepartResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex(),
                 Tables\Columns\ImageColumn::make('gambar')
                     ->visibility('public')
                     ->label('Foto')
                     ->circular()
                     ->size(40),
                 Tables\Columns\TextColumn::make('nama_sparepart')
-                    ->label('Nama Sparepart'),
+                    ->label('Nama'),
                 Tables\Columns\TextColumn::make('harga_sparepart')
-                    ->label('Harga Sparepart')
+                    ->label('Harga')
                     ->money('IDR'),
                 Tables\Columns\TextColumn::make('stok_sparepart')
-                    ->label('Stok Sparepart'),
+                    ->label('Stok'),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
                     ->html(),
@@ -105,6 +110,7 @@ class SparepartResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                 ])
             ])
+
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -112,21 +118,10 @@ class SparepartResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSpareparts::route('/'),
-            'create' => Pages\CreateSparepart::route('/create'),
-            'edit' => Pages\EditSparepart::route('/{record}/edit'),
-
-
+            'index' => Pages\ManageSpareparts::route('/'),
         ];
     }
 }

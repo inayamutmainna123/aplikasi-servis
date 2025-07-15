@@ -21,6 +21,8 @@ use Filament\Tables\Table;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use App\Enums\StatusServiceDetail;
+use Filament\Support\Enums\FontWeight;
+
 
 class PembayaranResource extends Resource
 {
@@ -38,7 +40,14 @@ class PembayaranResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Data Pembayaran')
+                Forms\Components\Section::make('Data Pembayaran')->headerActions([
+                    Forms\Components\Actions\Action::make('reset')
+                        ->modalHeading('Are you sure?')
+                        ->modalDescription('All existing items will be removed from the order.')
+                        ->requiresConfirmation()
+                        ->color('danger')
+                        ->action(fn(Forms\Set $set) => $set('items', [])),
+                ])
                     ->schema([
                         Forms\Components\Select::make('costumer_id')
                             ->relationship('costumer', 'nama_costumer')
@@ -187,7 +196,12 @@ class PembayaranResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('costumer.nama_costumer')->label(' Nama Customer'),
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('costumer.nama_costumer')
+                    ->weight(FontWeight::Bold)
+                    ->label('Customer'),
                 Tables\Columns\TextColumn::make('items')->label('Nama Service')->getStateUsing(
                     fn($record) => $record->items->map(fn($item) => optional($item->service_item)->nama_service)->filter()->join(', ')
                 ),
@@ -211,6 +225,7 @@ class PembayaranResource extends Resource
                 Tables\Columns\TextColumn::make('total_kembali')->money('IDR'),
                 Tables\Columns\TextColumn::make('status')->badge(),
                 Tables\Columns\TextColumn::make('tanggal_pembayaran')->date(),
+                Tables\Columns\TextColumn::make('metode_pembayaran'),
             ])
             ->actions([
                 ActionGroup::make([

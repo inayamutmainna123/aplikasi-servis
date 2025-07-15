@@ -50,6 +50,9 @@ class MerekKendaraanResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('kode_merek_kendaraan')
                     ->label('Kode'),
                 Tables\Columns\TextColumn::make('merek_kendaraan')

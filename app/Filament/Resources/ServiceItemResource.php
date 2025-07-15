@@ -18,6 +18,7 @@ use Filament\Actions\Modal\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\RichEditor;
 use Filament\Support\RawJs;
+use Filament\Support\Enums\FontWeight;
 
 class ServiceItemResource extends Resource
 {
@@ -37,9 +38,11 @@ class ServiceItemResource extends Resource
             ->schema([
                 Forms\Components\Section::make('')
                     ->schema([
+
                         Forms\Components\TextInput::make('nama_service')
                             ->required()
-                            ->label('Nama Service')
+                            ->label('Nama')
+                            ->weight(FontWeight::Bold)
                             ->maxLength(255),
                         Forms\Components\TextInput::make('harga_service')
                             ->required()
@@ -47,7 +50,7 @@ class ServiceItemResource extends Resource
                             // ->numeric()
                             ->currencyMask(thousandSeparator: ',', decimalSeparator: '.', precision: 2)
                             ->numeric()
-                            ->label('Harga Service'),
+                            ->label('Harga'),
                         Forms\Components\RichEditor::make('deskripsi')
                             ->required()
                             ->label('Deskripsi')
@@ -61,10 +64,16 @@ class ServiceItemResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nama_service'),
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex(),
+                Tables\Columns\TextColumn::make('nama_service')
+                    ->label('Nama'),
                 Tables\Columns\TextColumn::make('harga_service')
+                    ->label('Harga')
                     ->money('IDR'),
                 Tables\Columns\TextColumn::make('deskripsi')
+                    ->label('Deskripsi')
                     ->html(),
             ])
 

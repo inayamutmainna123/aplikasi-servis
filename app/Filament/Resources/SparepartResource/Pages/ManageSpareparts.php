@@ -4,16 +4,16 @@ namespace App\Filament\Resources\SparepartResource\Pages;
 
 use App\Filament\Resources\SparepartResource;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ManageRecords;
 
-class EditSparepart extends EditRecord
+class ManageSpareparts extends ManageRecords
 {
     protected static string $resource = SparepartResource::class;
 
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            Actions\CreateAction::make(),
         ];
     }
 }

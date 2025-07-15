@@ -23,6 +23,7 @@ use Filament\Notifications\Notification;
 use App\Models\PivotTable;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\RichEditor;
+use Filament\Support\Enums\FontWeight;
 
 
 
@@ -42,6 +43,14 @@ class ServiceDetailResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Data Service')
+                    ->headerActions([
+                        Forms\Components\Actions\Action::make('reset')
+                            ->modalHeading('Are you sure?')
+                            ->modalDescription('All existing items will be removed from the order.')
+                            ->requiresConfirmation()
+                            ->color('danger')
+                            ->action(fn(Forms\Set $set) => $set('items', [])),
+                    ])
                     ->schema([
                         Forms\Components\Select::make('costumer_id')
                             ->relationship('costumer', 'nama_costumer')
@@ -139,10 +148,17 @@ class ServiceDetailResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex()
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
-                    ->label('Costumer'),
+                    ->label('Costumer')
+                    ->weight(FontWeight::Bold)
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('items')
                     ->label('Nama Service')
+                    ->visibleFrom('md')
                     ->getStateUsing(
                         fn($record) =>
                         $record->items
@@ -152,25 +168,35 @@ class ServiceDetailResource extends Resource
                     ),
                 Tables\Columns\TextColumn::make('sparepart')
                     ->label('Nama Sparepart')
+                    ->visibleFrom('md')
                     ->getStateUsing(
                         fn($record) =>
                         $record->items->pluck('sparepart.nama_sparepart')->filter()->join(', ')
                     ),
                 Tables\Columns\TextColumn::make('tipe_kendaraan')
-                    ->label('Tipe Kendaraan'),
+                    ->label('Tipe Kendaraan')
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('merek_kendaraan.merek_kendaraan')
                     ->label('Merek Kendaraan')
+                    ->visibleFrom('md')
                     ->getStateUsing(fn($record) => optional($record->merek_kendaraan)->merek_kendaraan),
                 Tables\Columns\TextColumn::make('model_kendaraan')
-                    ->label('Model Kendaraan'),
+                    ->label('Model Kendaraan')
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('plat_kendaraan')
-                    ->label('Plat Kendaraan'),
+                    ->label('Plat Kendaraan')
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('catatan')
-                    ->label('Catatan'),
+                    ->label('Catatan')
+                    ->sortable(true)
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('status')
-                    ->label('Status'),
+                    ->label('Status')
+                    ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('tanggal_service')
-                    ->label('Tanggal Service'),
+                    ->label('Tanggal Service')
+                    ->visibleFrom('md')
+                    ->date(),
 
             ])
             ->filters([

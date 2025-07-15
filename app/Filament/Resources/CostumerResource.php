@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\Section;
+use Filament\Support\Enums\FontWeight;
+
 
 
 
@@ -68,8 +70,12 @@ class CostumerResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('index')
+                    ->label('No')
+                    ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama_costumer')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->weight(FontWeight::Bold),
                 Tables\Columns\TextColumn::make('email_costumer')
                     ->label('Email'),
                 Tables\Columns\TextColumn::make('no_hp_costumer')
