@@ -200,7 +200,6 @@ class PembayaranResource extends Resource
                     ->label('No')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
-                    ->weight(FontWeight::Bold)
                     ->label('Customer'),
                 Tables\Columns\TextColumn::make('items')->label('Nama Service')->getStateUsing(
                     fn($record) => $record->items->map(fn($item) => optional($item->service_item)->nama_service)->filter()->join(', ')

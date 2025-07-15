@@ -74,8 +74,7 @@ class CostumerResource extends Resource
                     ->label('No')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama_costumer')
-                    ->label('Nama')
-                    ->weight(FontWeight::Bold),
+                    ->label('Nama'),
                 Tables\Columns\TextColumn::make('email_costumer')
                     ->label('Email'),
                 Tables\Columns\TextColumn::make('no_hp_costumer')

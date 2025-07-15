@@ -47,7 +47,6 @@ class SparepartResource extends Resource
                         Forms\Components\TextInput::make('nama_sparepart')
                             ->required()
                             ->label('Nama ')
-                            ->weight(FontWeight::Bold)
                             ->columnSpan('full')
                             ->inlineLabel('1')
                             ->maxLength(255),
