@@ -25,13 +25,23 @@
         }
 
         #home {
-            width: 46px;
-            height: 44px;
+            width: 70px;
+            height: 70px;
+            position: relative;
+            top: -20px;
+            left: 650px;
 
 
         }
+
+        h2 {
+            top: -100px;
+            position: relative;
+            text-align: center;
+        }
     </style>
-    <img id="home" src="image/logo.png" width="100" height="50">
+    <img id="home" src="image/logo.png" width="200" height="200">
+    <h2>Kwitansi Pembayaran</h2>
 
 </html>
 </head>
@@ -40,7 +50,6 @@
     @php
 
     @endphp
-    <h2>Pembayaran</h2>
     <p><strong>Tanggal:</strong> {{ $pembayaran->tanggal_pembayaran }}</p>
     <p><strong>Customer:</strong> {{ $pembayaran->costumer->nama_costumer }}</p>
     <p><strong>Alamat:</strong> {{ $pembayaran->costumer->alamat_costumer }}</p>
