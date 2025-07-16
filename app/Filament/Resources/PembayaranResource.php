@@ -21,6 +21,7 @@ use Filament\Tables\Table;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use App\Enums\StatusServiceDetail;
+use App\pdf\Pembayaran as PdfPembayaran;
 use Filament\Support\Enums\FontWeight;
 use Illuminate\Support\HtmlString;
 use Masterminds\HTML5;
@@ -259,9 +260,8 @@ class PembayaranResource extends Resource
                     Tables\Actions\Action::make('view_invoice')
                         ->label('View Invoice')
                         ->icon('heroicon-s-document-text')
-                        ->url(fn($record) => self::getUrl("invoice", ['record' => $record->id]))
-
-
+                        // ->url(fn($record) => self::getUrl("invoice", ['record' => $record->id]))
+                        ->url(fn($record) => route('pembayaran.cetak', $record), shouldOpenInNewTab: true)
                 ])
             ])
             ->bulkActions([
