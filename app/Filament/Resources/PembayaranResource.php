@@ -22,7 +22,8 @@ use Filament\Tables\Actions\ActionGroup;
 use Filament\Notifications\Notification;
 use App\Enums\StatusServiceDetail;
 use Filament\Support\Enums\FontWeight;
-
+use Illuminate\Support\HtmlString;
+use Masterminds\HTML5;
 
 class PembayaranResource extends Resource
 {
@@ -40,6 +41,7 @@ class PembayaranResource extends Resource
     {
         return $form
             ->schema([
+
                 Forms\Components\Section::make('Data Pembayaran')->headerActions([
                     Forms\Components\Actions\Action::make('reset')
                         ->modalHeading('Are you sure?')
@@ -189,8 +191,9 @@ class PembayaranResource extends Resource
                             ])
                             ->default('cash')
                             ->required(),
-                    ]),
+                    ])
             ])
+
             ->columns(2);
     }
 
@@ -202,13 +205,27 @@ class PembayaranResource extends Resource
                     ->label('No')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
-                    ->label('Customer'),
-                Tables\Columns\TextColumn::make('items')->label('Nama Service')->getStateUsing(
-                    fn($record) => $record->items->map(fn($item) => optional($item->service_item)->nama_service)->filter()->join(', ')
-                ),
-                Tables\Columns\TextColumn::make('items_sparepart')->label('Nama Sparepart')->getStateUsing(
-                    fn($record) => $record->items->map(fn($item) => optional($item->sparepart)->nama_sparepart)->filter()->join(', ')
-                ),
+                    ->label('Customer')
+                    ->visibleFrom('md')
+                    ->formatStateUsing(fn($record) => new HtmlString(<<<HTML5
+                        <div class="items-center">
+                            <div>{$record->costumer->nama_costumer}</div>
+                            <div class="mt-2 py-1 px-2 inline-flex text-primary-600 dark:text-primary-400 font-semibold text-xs dark:text-primary-400/10 bg-primary-50 ring-1 ring-primary-600/10 dark:ring-primary-400/30 rounded-md">{$record->status}</div>
+                            <div>{$record->tanggal_pembayaran->format('M d Y')}</div>
+                        </div>
+                    HTML5)),
+                Tables\Columns\TextColumn::make('items')
+                    ->label('Nama Service')
+                    ->getStateUsing(
+                        fn($record) => $record->items->map(fn($item) => optional($item->service_item)->nama_service)->filter()
+                    )
+                    ->bulleted(),
+                Tables\Columns\TextColumn::make('items_sparepart')
+                    ->label('Nama Sparepart')
+                    ->getStateUsing(
+                        fn($record) => $record->items->map(fn($item) => optional($item->sparepart)->nama_sparepart)->filter()
+                    )
+                    ->bulleted(),
                 Tables\Columns\TextColumn::make('items.harga_service')->label('Harga Service')->money('IDR')->getStateUsing(
                     fn($record) => $record->items->map(fn($item) => optional($item->service_item)->harga_service)->filter()->join(', ')
                 ),
@@ -217,16 +234,22 @@ class PembayaranResource extends Resource
                 ),
                 Tables\Columns\TextColumn::make('jumlah_service')->label('Jumlah Service')->getStateUsing(
                     fn($record) => $record->items->sum('jumlah_service')
-                ),
+                )->wrapHeader()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('jumlah_sparepart')->label('Jumlah Sparepart')->getStateUsing(
                     fn($record) => $record->items->sum('jumlah_sparepart')
-                ),
+                )->wrapHeader()
+                    ->alignCenter(),
                 Tables\Columns\TextColumn::make('total_harga')->money('IDR'),
                 Tables\Columns\TextColumn::make('total_bayar')->money('IDR'),
                 Tables\Columns\TextColumn::make('total_kembali')->money('IDR'),
-                Tables\Columns\TextColumn::make('status')->badge(),
-                Tables\Columns\TextColumn::make('tanggal_pembayaran')->date(),
-                Tables\Columns\TextColumn::make('metode_pembayaran'),
+                // Tables\Columns\TextColumn::make('status')->badge()
+                //     ->visibleFrom('md'),
+                // Tables\Columns\TextColumn::make('tanggal_pembayaran')
+                //     ->date()
+                //     ->visibleFrom('md'),
+                Tables\Columns\TextColumn::make('metode_pembayaran')
+                    ->visibleFrom('md'),
             ])
             ->actions([
                 ActionGroup::make([
