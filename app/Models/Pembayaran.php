@@ -35,16 +35,17 @@ class Pembayaran extends Model
         return $this->belongsTo(Costumer::class, 'costumer_id');
     }
 
-    public function sparepart()
+    public function services()
     {
-        return $this->belongsTo(Sparepart::class, 'sparepart_id');
+        return $this->belongsToMany(ServiceItem::class, 'pembayaran_service')
+            ->withPivot('harga');
     }
 
-    public function service_item()
+    public function spareparts()
     {
-        return $this->belongsTo(ServiceItem::class, 'service_item_id');
+        return $this->belongsToMany(Sparepart::class, 'pembayaran_sparepart')
+            ->withPivot('jumlah', 'harga');
     }
-
     public function items()
     {
         return $this->hasMany(PivotTable::class, 'pembayaran_id');

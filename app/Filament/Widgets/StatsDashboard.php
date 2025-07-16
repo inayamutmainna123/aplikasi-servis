@@ -11,11 +11,11 @@ class StatsDashboard extends BaseWidget
     {
         $countsparepart = \App\Models\Sparepart::count();
         $countstok_sparepart = \App\Models\Sparepart::sum('stok_sparepart');
-        $countcostumer = \App\Models\Costumer::count();
+        $countservicedetail = \App\Models\ServiceDetail::count();
         return [
             Stat::make(' Total Sparepart', $countsparepart),
             Stat::make('Stok Sparepart', $countstok_sparepart),
-            Stat::make('Total Costumer', $countcostumer),
+            Stat::make('Total Yang Di Service', $countservicedetail),
         ];
     }
 }

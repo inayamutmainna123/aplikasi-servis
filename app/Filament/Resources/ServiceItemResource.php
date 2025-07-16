@@ -42,7 +42,6 @@ class ServiceItemResource extends Resource
                         Forms\Components\TextInput::make('nama_service')
                             ->required()
                             ->label('Nama')
-                            ->weight(FontWeight::Bold)
                             ->maxLength(255),
                         Forms\Components\TextInput::make('harga_service')
                             ->required()

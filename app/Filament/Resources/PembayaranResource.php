@@ -56,8 +56,10 @@ class PembayaranResource extends Resource
                             ->label('Customer'),
                         Forms\Components\DateTimePicker::make('tanggal_pembayaran')
                             ->required()
+                            ->native(false)
                             ->inlineLabel()
                             ->label('Tanggal Pembayaran'),
+
                     ]),
 
                 Forms\Components\Repeater::make('items')
@@ -231,6 +233,12 @@ class PembayaranResource extends Resource
                     Tables\Actions\EditAction::make(),
                     Tables\Actions\ViewAction::make(),
                     Tables\Actions\DeleteAction::make(),
+                    Tables\Actions\Action::make('view_invoice')
+                        ->label('View Invoice')
+                        ->icon('heroicon-s-document-text')
+                        ->url(fn($record) => self::getUrl("invoice", ['record' => $record->id]))
+
+
                 ])
             ])
             ->bulkActions([
@@ -244,6 +252,7 @@ class PembayaranResource extends Resource
             'index' => Pages\ListPembayarans::route('/'),
             'create' => Pages\CreatePembayaran::route('/create'),
             'edit' => Pages\EditPembayaran::route('/{record}/edit'),
+            'invoice' => Pages\Invoice::route('/{record}/invoice'),
         ];
     }
 }
