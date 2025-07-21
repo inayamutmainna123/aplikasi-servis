@@ -99,12 +99,16 @@ class ServiceDetailResource extends Resource
                             ->relationship('service_item', 'nama_service')
                             ->label('Service')
                             ->inlineLabel()
+                            ->searchable()
+                            ->live()
                             ->native(false)
                             ->columnSpanFull()
                             ->required(),
                         Forms\Components\Select::make('sparepart_id')
                             ->relationship('sparepart', 'nama_sparepart')
                             ->label('Sparepart')
+                            ->searchable()
+                            ->inlineLabel()
                             ->native(false)
                             ->live()
                             ->afterStateUpdated(function ($state, callable $set) {
