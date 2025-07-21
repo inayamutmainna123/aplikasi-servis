@@ -19,6 +19,7 @@ use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\RichEditor;
 use Filament\Support\RawJs;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Filters\SelectFilter;
 
 class SparepartResource extends Resource
 {
@@ -110,7 +111,6 @@ class SparepartResource extends Resource
                     Tables\Actions\DeleteAction::make(),
                 ])
             ])
-
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
@@ -118,10 +118,19 @@ class SparepartResource extends Resource
             ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageSpareparts::route('/'),
+            'index' => Pages\ListSpareparts::route('/'),
+            'create' => Pages\CreateSparepart::route('/create'),
+            'edit' => Pages\EditSparepart::route('/{record}/edit'),
         ];
     }
 }
