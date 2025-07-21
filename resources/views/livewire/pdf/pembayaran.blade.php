@@ -41,6 +41,7 @@
             background-color: whitesmoke;
             padding: 15px;
             text-align: left;
+            columns: center;
             left: -60px;
             width: 90px;
             top: 100px;
@@ -74,6 +75,7 @@
         h6 {
             top: -140px;
             left: 30px;
+            font-family: sans-serif;
             position: relative;
             text-align: center;
 
@@ -110,7 +112,7 @@
     <img id="home" src="image/logo.png" width="200" height="200">
     <img id="jats" src="image/jats.png" width="100" height="100" left="100">
     <h3>AUTO JATS SERVIS SMKN 1 ANGGANA</h3>
-    <h6> Jl. Handil Soppeng , RT. 10,Kutai Lama, Kec. Anggana, Kab.Kutai Kartanegara,<br> KalimantanTimur| Kode Pos75381</h6>
+    <h6> Jl. Handil Soppeng , RT. 10,Kutai Lama, Kec. Anggana, Kab.Kutai Kartanegara,<br> KalimantanTimur| Kode Pos 75381</h6>
 
 </html>
 </head>
