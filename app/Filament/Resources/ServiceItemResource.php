@@ -67,7 +67,8 @@ class ServiceItemResource extends Resource
                     ->label('No')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama_service')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('harga_service')
                     ->label('Harga')
                     ->money('IDR'),

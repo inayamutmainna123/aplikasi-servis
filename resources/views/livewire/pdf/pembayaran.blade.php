@@ -9,10 +9,11 @@
         body {
             font-family: sans-serif;
             font-size: 15px;
+            background-color: #fff;
         }
 
         table {
-            width: 50%;
+            width: 100%;
             border-collapse: collapse;
             margin-top: 20px;
         }
@@ -30,17 +31,19 @@
         th {
             border: 1px solid #000;
             padding: 15px;
+            background-color: rgb(128, 191, 231);
             left: 50px;
-            top: 50px;
+            top: 100px;
         }
 
         td {
             border: 1px solid #000;
+            background-color: whitesmoke;
             padding: 15px;
             text-align: left;
-            left: -50px;
+            left: -60px;
             width: 90px;
-            top: 50px;
+            top: 100px;
         }
 
         #home {
@@ -84,14 +87,23 @@
 
         h4 {
             position: relative;
-            top: -40px;
-            left: 20px;
+            top: -5px;
+            left: 0px;
         }
 
         #jats {
             position: relative;
             top: -5px;
             left: 450px;
+        }
+
+        .harga {
+            position: relative;
+            top: -5px;
+            left: 560px;
+            border-radius: 0px;
+            margin: 10px;
+
         }
     </style>
     <img id="home" src="image/smk.png" width="200" height="200">
@@ -139,10 +151,11 @@
         </tbody>
     </table>
 
-    <p><strong>Total Harga:</strong> Rp{{ number_format($pembayaran->total_harga, 0, ',', '.') }}</p>
-    <p><strong>Total Bayar:</strong> Rp{{ number_format($pembayaran->total_bayar, 0, ',', '.') }}</p>
-    <p><strong>Kembalian:</strong> Rp{{ number_format($pembayaran->total_kembali, 0, ',', '.') }}</p>
-
+    <div class="harga">
+        <p><strong>Total Harga:</strong> Rp{{ number_format($pembayaran->total_harga, 0, ',', '.') }}</p>
+        <p><strong>Total Bayar:</strong> Rp{{ number_format($pembayaran->total_bayar, 0, ',', '.') }}</p>
+        <p><strong>Kembalian:</strong> Rp{{ number_format($pembayaran->total_kembali, 0, ',', '.') }}</p>
+    </div>
     <div class="ucapan">
         Terima kasih telah menggunakan layanan kami!<br>
         Semoga kendaraan Anda selalu dalam kondisi terbaik.

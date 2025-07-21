@@ -154,6 +154,7 @@ class ServiceDetailResource extends Resource
                     ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Costumer')
+                    ->searchable()
                     ->columnSpanFull()
                     ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('items')

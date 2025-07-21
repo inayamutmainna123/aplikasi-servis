@@ -207,6 +207,7 @@ class PembayaranResource extends Resource
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Customer')
+                    ->searchable()
                     ->visibleFrom('md')
                     ->formatStateUsing(fn($record) => new HtmlString(<<<HTML5
                         <div class="items-center">

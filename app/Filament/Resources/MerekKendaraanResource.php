@@ -56,7 +56,8 @@ class MerekKendaraanResource extends Resource
                 Tables\Columns\TextColumn::make('kode_merek_kendaraan')
                     ->label('Kode'),
                 Tables\Columns\TextColumn::make('merek_kendaraan')
-                    ->label('Merek'),
+                    ->label('Merek')
+                    ->searchable(),
             ])
 
             ->filters([

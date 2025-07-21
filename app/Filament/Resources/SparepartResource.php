@@ -89,7 +89,8 @@ class SparepartResource extends Resource
                     ->circular()
                     ->size(40),
                 Tables\Columns\TextColumn::make('nama_sparepart')
-                    ->label('Nama'),
+                    ->label('Nama')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('harga_sparepart')
                     ->label('Harga')
                     ->money('IDR'),
