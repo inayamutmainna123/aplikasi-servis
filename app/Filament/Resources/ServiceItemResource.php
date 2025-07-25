@@ -17,8 +17,10 @@ use Filament\Actions\ActionGroup as ActionsActionGroup;
 use Filament\Actions\Modal\Actions\Action;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Support\RawJs;
 use Filament\Support\Enums\FontWeight;
+
 
 class ServiceItemResource extends Resource
 {

@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\SparepartResource\Pages;
 use App\Filament\Resources\SparepartResource\RelationManagers;
 use App\Models\Sparepart;
+use Filament\Actions\ImportAction as ActionsImportAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -17,9 +18,13 @@ use Filament\Forms\Components\ImageUpload;
 use Filament\Tables\Actions\ActionGroup;
 use Filament\Tables\Actions\Action;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Support\RawJs;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Actions\ImportAction as TablesActionsImportAction;
 use Filament\Tables\Filters\SelectFilter;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportAction;
+
 
 class SparepartResource extends Resource
 {
@@ -114,6 +119,7 @@ class SparepartResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ExportAction::make(),
                 ]),
             ]);
     }
@@ -124,7 +130,6 @@ class SparepartResource extends Resource
             //
         ];
     }
-
     public static function getPages(): array
     {
         return [
