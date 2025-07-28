@@ -11,17 +11,10 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Tables\Columns\ImageColumn;
-use Filament\Forms\Components\ImageUpload;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Actions\Action;
-use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Tabs\Tab;
-use Filament\Support\RawJs;
-use Filament\Support\Enums\FontWeight;
-use Filament\Tables\Filters\SelectFilter;
+
+
+
 
 
 class SparepartResource extends Resource
@@ -117,8 +110,7 @@ class SparepartResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ExportAction::make(),
-                ]),
+                ])
             ]);
     }
 

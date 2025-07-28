@@ -3,19 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CostumerResource\Pages;
-use App\Filament\Resources\CostumerResource\RelationManagers;
 use App\Models\Costumer;
 use Filament\Forms;
-use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Forms\Components\Section;
-use Filament\Support\Enums\FontWeight;
+
 
 
 

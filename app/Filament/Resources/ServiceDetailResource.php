@@ -12,18 +12,9 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\DateTimePicker;
-use Filament\Forms\Components\TimePicker;
-use Filament\Forms\Get;
 use Filament\Notifications\Notification;
-use App\Models\PivotTable;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Forms\Components\RichEditor;
-use Filament\Support\Enums\FontWeight;
+
 
 
 

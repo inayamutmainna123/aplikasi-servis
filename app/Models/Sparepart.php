@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sparepart extends Model
 {
    use HasUlids;
-   protected $table = "Sparepart";
+   protected $table = "sparepart";
 
    protected $fillable = [
       'gambar',
@@ -17,6 +17,4 @@ class Sparepart extends Model
       'stok_sparepart',
       'deskripsi',
    ];
-
-
 }

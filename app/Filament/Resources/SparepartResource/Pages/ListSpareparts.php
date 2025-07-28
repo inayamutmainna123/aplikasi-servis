@@ -5,6 +5,8 @@ namespace App\Filament\Resources\SparepartResource\Pages;
 use App\Filament\Resources\SparepartResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use App\Exports\SparepartExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class ListSpareparts extends ListRecords
@@ -17,9 +19,12 @@ class ListSpareparts extends ListRecords
         $decodeQueryString = urldecode(request()->getQueryString());
 
         return [
-            Actions\Action::make('export')
-                ->label('Export'),
             Actions\CreateAction::make(),
+            Actions\Action::make('exportToExcel')
+                ->label('Ekspor ke Excel')
+                ->action(fn() => Excel::download(new SparepartExport(), 'data_export.xlsx'))
+                ->color('primary')
+                ->button(),
 
         ];
     }
