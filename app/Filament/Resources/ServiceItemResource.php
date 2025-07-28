@@ -58,15 +58,23 @@ class ServiceItemResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama_service')
                     ->label('Nama')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('harga_service')
                     ->label('Harga')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->money('IDR'),
                 Tables\Columns\TextColumn::make('deskripsi')
                     ->label('Deskripsi')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->html(),
             ])
 

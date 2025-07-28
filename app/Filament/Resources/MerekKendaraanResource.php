@@ -51,9 +51,13 @@ class MerekKendaraanResource extends Resource
                     ->label('No')
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('kode_merek_kendaraan')
-                    ->label('Kode'),
+                    ->label('Kode')
+                    ->alignCenter()
+                    ->wrapHeader(),
                 Tables\Columns\TextColumn::make('merek_kendaraan')
                     ->label('Merek')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->searchable(),
             ])
 

@@ -14,6 +14,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Filters\SelectFilter;
 
 
 
@@ -146,57 +147,78 @@ class ServiceDetailResource extends Resource
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
                     ->rowIndex()
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Costumer')
                     ->searchable()
                     ->columnSpanFull()
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('items')
-                    ->label('Nama Service')
-                    ->visibleFrom('md')
-                    ->getStateUsing(
-                        fn($record) =>
-                        $record->items
-                            ->map(fn($item) => optional($item->service_item)->nama_service)
-                            ->filter()
-                            ->join(', ')
-                    ),
-                Tables\Columns\TextColumn::make('sparepart')
-                    ->label('Nama Sparepart')
-                    ->visibleFrom('md')
-                    ->getStateUsing(
-                        fn($record) =>
-                        $record->items->pluck('sparepart.nama_sparepart')->filter()->join(', ')
-                    ),
-                Tables\Columns\TextColumn::make('tipe_kendaraan')
-                    ->label('Tipe Kendaraan')
+                    ->label('Service & Sparepart')
+                    ->getStateUsing(function ($record) {
+                        return $record->items->map(function ($item) {
+                            $service = optional($item->service_item)->nama_service;
+                            $sparepart = optional($item->sparepart)->nama_sparepart;
+
+                            // Gabungkan keduanya jika ada, jika tidak ambil salah satu
+                            return collect([$service, $sparepart])
+                                ->filter()
+                                ->implode(' + ');
+                        })->filter(); // Buang nilai kosong/null
+                    })
+                    ->bulleted()
+                    ->alignCenter()
+                    ->wrapHeader(),
+
+                Tables\Columns\TextColumn::make('kendaraan_info')
+                    ->label('Info Kendaraan')
+                    ->alignCenter()
+                    ->wrapHeader()
+                    ->getStateUsing(function ($record) {
+                        return collect([
+                            'Tipe: ' . $record->tipe_kendaraan,
+                            'Merek: ' . optional($record->merek_kendaraan)->merek_kendaraan,
+                            'Model: ' . $record->model_kendaraan,
+                            'Plat: ' . $record->plat_kendaraan,
+                        ])->filter()
+
+                            ->toArray();
+                    })
+                    ->bulleted()
                     ->visibleFrom('md'),
-                Tables\Columns\TextColumn::make('merek_kendaraan.merek_kendaraan')
-                    ->label('Merek Kendaraan')
-                    ->visibleFrom('md')
-                    ->getStateUsing(fn($record) => optional($record->merek_kendaraan)->merek_kendaraan),
-                Tables\Columns\TextColumn::make('model_kendaraan')
-                    ->label('Model Kendaraan')
-                    ->visibleFrom('md'),
-                Tables\Columns\TextColumn::make('plat_kendaraan')
-                    ->label('Plat Kendaraan')
-                    ->visibleFrom('md'),
+
                 Tables\Columns\TextColumn::make('catatan')
                     ->label('Catatan')
                     ->sortable(true)
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->visibleFrom('md'),
                 Tables\Columns\TextColumn::make('tanggal_service')
                     ->label('Tanggal Service')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->visibleFrom('md')
                     ->date(),
 
             ])
             ->filters([
                 //
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'belum diperbaiki' => 'Belum Diperbaiki',
+                        'sedang diperbaiki' => 'Sedang Diperbaiki',
+                        'selesai diperbaiki' => 'Selesai Diperbaiki',
+                    ]),
             ])
             ->actions([
                 ActionGroup::make([

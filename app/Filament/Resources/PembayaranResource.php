@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PembayaranResource\Pages;
 use App\Models\Pembayaran;
+use App\Models\ServiceDetail;
 use App\Models\ServiceItem;
 use App\Models\Sparepart;
 use Filament\Forms;
@@ -16,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Tables\Actions\ActionGroup;
 use Illuminate\Support\HtmlString;
+
 
 class PembayaranResource extends Resource
 {
@@ -46,6 +48,7 @@ class PembayaranResource extends Resource
                         Forms\Components\Select::make('costumer_id')
                             ->relationship('costumer', 'nama_costumer')
                             ->required()
+                            ->native(false)
                             ->inlineLabel()
                             ->label('Customer'),
                         Forms\Components\DateTimePicker::make('tanggal_pembayaran')
@@ -184,9 +187,9 @@ class PembayaranResource extends Resource
                             ->default('cash')
                             ->required(),
                     ])
-            ])
 
-            ->columns(2);
+                    ->columns(2),
+            ]);
     }
 
     public static function table(Table $table): Table
@@ -195,6 +198,8 @@ class PembayaranResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('costumer.nama_costumer')
                     ->label('Customer')
@@ -202,47 +207,89 @@ class PembayaranResource extends Resource
                     ->visibleFrom('md')
                     ->formatStateUsing(fn($record) => new HtmlString(<<<HTML5
                         <div class="items-center">
-                            <div>{$record->costumer->nama_costumer}</div>
-                            <div class="mt-2 py-1 px-2 inline-flex text-primary-600 dark:text-primary-400 font-semibold text-xs dark:text-primary-400/10 bg-primary-50 ring-1 ring-primary-600/10 dark:ring-primary-400/30 rounded-md">{$record->status}</div>
-                            <div>{$record->tanggal_pembayaran->format('M d Y')}</div>
+                            <div class="font-bold">{$record->costumer->nama_costumer}</div>
+                            <div class="text-xs">{$record->tanggal_pembayaran->format('M d Y')}</div>
                         </div>
                     HTML5)),
+
                 Tables\Columns\TextColumn::make('items')
-                    ->label('Nama Service')
-                    ->getStateUsing(
-                        fn($record) => $record->items->map(fn($item) => optional($item->service_item)->nama_service)->filter()
-                    )
-                    ->bulleted(),
-                Tables\Columns\TextColumn::make('items_sparepart')
-                    ->label('Nama Sparepart')
-                    ->getStateUsing(
-                        fn($record) => $record->items->map(fn($item) => optional($item->sparepart)->nama_sparepart)->filter()
-                    )
-                    ->bulleted(),
-                Tables\Columns\TextColumn::make('items.harga_service')->label('Harga Service')->money('IDR')->getStateUsing(
-                    fn($record) => $record->items->map(fn($item) => optional($item->service_item)->harga_service)->filter()->join(', ')
-                ),
-                Tables\Columns\TextColumn::make('sparepart.harga_sparepart')->label('Harga Sparepart')->money('IDR')->getStateUsing(
-                    fn($record) => $record->items->map(fn($item) => optional($item->sparepart)->harga_sparepart)->filter()->join(', ')
-                ),
-                Tables\Columns\TextColumn::make('jumlah_service')->label('Jumlah Service')->getStateUsing(
-                    fn($record) => $record->items->sum('jumlah_service')
-                )->wrapHeader()
-                    ->alignCenter(),
-                Tables\Columns\TextColumn::make('jumlah_sparepart')->label('Jumlah Sparepart')->getStateUsing(
-                    fn($record) => $record->items->sum('jumlah_sparepart')
-                )->wrapHeader()
-                    ->alignCenter(),
-                Tables\Columns\TextColumn::make('total_harga')->money('IDR'),
-                Tables\Columns\TextColumn::make('total_bayar')->money('IDR'),
-                Tables\Columns\TextColumn::make('total_kembali')->money('IDR'),
-                // Tables\Columns\TextColumn::make('status')->badge()
-                //     ->visibleFrom('md'),
-                // Tables\Columns\TextColumn::make('tanggal_pembayaran')
-                //     ->date()
-                //     ->visibleFrom('md'),
+                    ->label('Service & Sparepart')
+                    ->getStateUsing(function ($record) {
+                        return $record->items->map(function ($item) {
+                            $service = optional($item->service_item)->nama_service;
+                            $sparepart = optional($item->sparepart)->nama_sparepart;
+
+
+                            return collect([$service, $sparepart])
+                                ->filter()
+                                ->implode(' + ');
+                        })->filter();
+                    })
+                    ->bulleted()
+                    ->alignCenter()
+                    ->wrapHeader(),
+                Tables\Columns\TextColumn::make('harga_detail')
+                    ->label('Harga Detail')
+                    ->html() // agar <br> bisa digunakan
+                    ->getStateUsing(function ($record) {
+                        $hargaServices = $record->items
+                            ->map(fn($item) => optional($item->service_item)->harga_service)
+                            ->filter()
+                            ->map(fn($harga) => 'Rp ' . number_format($harga, 0, ',', '.'))
+                            ->join(', ');
+
+                        $hargaSpareparts = $record->items
+                            ->map(fn($item) => optional($item->sparepart)->harga_sparepart)
+                            ->filter()
+                            ->map(fn($harga) => 'Rp ' . number_format($harga, 0, ',', '.'))
+                            ->join(', ');
+
+                        return "Service: $hargaServices<br>Sparepart: $hargaSpareparts";
+                    })
+                    ->alignCenter()
+                    ->wrapHeader(),
+
+                Tables\Columns\TextColumn::make('total_item')
+                    ->label('Total Item')
+                    ->alignCenter()
+                    ->getStateUsing(function ($record) {
+                        $jumlahSparepart = $record->items->sum('jumlah_sparepart');
+                        $jumlahService = $record->items->sum('jumlah_service');
+                        return $jumlahSparepart + $jumlahService;
+                    })
+                    ->formatStateUsing(fn($state) => number_format($state) . ' item'),
+
+
+                Tables\Columns\TextColumn::make('total_harga')->money('IDR')
+                    ->visibleFrom('md')
+                    ->alignCenter()
+                    ->wrapHeader()
+                    ->label('Detail Total')
+                    ->formatStateUsing(fn($record) => new HtmlString(<<<HTML5
+                    <div class="items-center">
+                        <div class="text-xs">Total Harga: {$record->total_harga}</div>
+                        <div class="text-xs">Total Bayar: {$record->total_bayar}</div>
+                        <div class="text-xs">Total Kembali: {$record->total_kembali}</div>
+                    </div>
+                HTML5)),
                 Tables\Columns\TextColumn::make('metode_pembayaran')
-                    ->visibleFrom('md'),
+                    ->visibleFrom('md')
+                    ->alignCenter()
+                    ->wrapHeader(),
+                Tables\Columns\TextColumn::make('status')->badge()
+                    ->visibleFrom('md')
+                    ->alignCenter()
+                    ->wrapHeader(),
+
+            ])
+            ->filters([
+                //
+                Tables\Filters\SelectFilter::make('status')
+                    ->label('Status')
+                    ->options([
+                        'lunas' => 'Lunas',
+                        'belum lunas' => 'Belum Lunas'
+                    ]),
             ])
             ->actions([
                 ActionGroup::make([

@@ -28,8 +28,7 @@ class CostumerResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('')
-                    ->aside()
-                    ->columnSpan('full')
+
                     ->schema([
                         Forms\Components\TextInput::make('nama_costumer')
                             ->required()
@@ -67,16 +66,25 @@ class CostumerResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
+                    ->alignCenter()
                     ->rowIndex(),
                 Tables\Columns\TextColumn::make('nama_costumer')
                     ->label('Nama')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email_costumer')
-                    ->label('Email'),
+                    ->label('Email')
+                    ->alignCenter()
+                    ->wrapHeader(),
                 Tables\Columns\TextColumn::make('no_hp_costumer')
-                    ->label('No HP'),
+                    ->label('No HP')
+                    ->alignCenter()
+                    ->wrapHeader(),
                 Tables\Columns\TextColumn::make('alamat_costumer')
-                    ->label('Alamat'),
+                    ->label('Alamat')
+                    ->alignCenter()
+                    ->wrapHeader(),
             ])
 
             ->filters([

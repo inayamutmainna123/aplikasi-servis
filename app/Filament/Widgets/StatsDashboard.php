@@ -14,7 +14,7 @@ class StatsDashboard extends BaseWidget
         $countservicedetail = \App\Models\ServiceDetail::count();
         return [
             Stat::make(' Total Sparepart', $countsparepart),
-            Stat::make('Stok Sparepart', $countstok_sparepart),
+            Stat::make('Total Stok Sparepart', $countstok_sparepart),
             Stat::make('Total Yang Di Service', $countservicedetail),
         ];
     }

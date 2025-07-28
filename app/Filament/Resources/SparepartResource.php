@@ -79,6 +79,8 @@ class SparepartResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('index')
                     ->label('No')
+                    ->alignCenter()
+                    ->wrapHeader()
                     ->rowIndex(),
                 Tables\Columns\ImageColumn::make('gambar')
                     ->visibility('public')
