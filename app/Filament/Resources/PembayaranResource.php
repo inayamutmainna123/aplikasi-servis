@@ -8,6 +8,7 @@ use App\Models\ServiceDetail;
 use App\Models\ServiceItem;
 use App\Models\Sparepart;
 use Filament\Forms;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
@@ -51,7 +52,7 @@ class PembayaranResource extends Resource
                             ->native(false)
                             ->inlineLabel()
                             ->label('Customer'),
-                        Forms\Components\DateTimePicker::make('tanggal_pembayaran')
+                        Forms\Components\DatePicker::make('tanggal_pembayaran')
                             ->required()
                             ->native(false)
                             ->inlineLabel()
@@ -290,6 +291,7 @@ class PembayaranResource extends Resource
                         'lunas' => 'Lunas',
                         'belum lunas' => 'Belum Lunas'
                     ]),
+
             ])
             ->actions([
                 ActionGroup::make([

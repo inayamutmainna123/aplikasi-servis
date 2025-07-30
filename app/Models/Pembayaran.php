@@ -46,8 +46,19 @@ class Pembayaran extends Model
         return $this->belongsToMany(Sparepart::class, 'pembayaran_sparepart')
             ->withPivot('jumlah', 'harga');
     }
+
     public function items()
     {
         return $this->hasMany(PivotTable::class, 'pembayaran_id');
+    }
+
+    public function scopeBelumLunas($query)
+    {
+        return $query->where('status', 'belum lunas');
+    }
+
+    public function scopeLunas($query)
+    {
+        return $query->where('status', 'lunas');
     }
 }

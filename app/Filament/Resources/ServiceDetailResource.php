@@ -7,6 +7,7 @@ use App\Filament\Resources\ServiceDetailResource\Pages;
 use App\Filament\Resources\ServiceDetailResource\RelationManagers;
 use App\Models\ServiceDetail;
 use App\Models\Sparepart;
+use Dompdf\Css\Color;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,7 +15,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Notifications\Notification;
 use Filament\Tables\Actions\ActionGroup;
-use Filament\Tables\Filters\SelectFilter;
+
 
 
 
@@ -176,7 +177,7 @@ class ServiceDetailResource extends Resource
 
                 Tables\Columns\TextColumn::make('kendaraan_info')
                     ->label('Info Kendaraan')
-                    ->alignCenter()
+                    ->alignStart()
                     ->wrapHeader()
                     ->getStateUsing(function ($record) {
                         return collect([
@@ -197,17 +198,22 @@ class ServiceDetailResource extends Resource
                     ->alignCenter()
                     ->wrapHeader()
                     ->visibleFrom('md'),
-                Tables\Columns\TextColumn::make('status')
-                    ->label('Status')
-                    ->alignCenter()
-                    ->wrapHeader()
-                    ->visibleFrom('md'),
+
                 Tables\Columns\TextColumn::make('tanggal_service')
                     ->label('Tanggal Service')
                     ->alignCenter()
                     ->wrapHeader()
                     ->visibleFrom('md')
                     ->date(),
+
+                Tables\Columns\TextColumn::make('status')
+
+
+                    ->label('Status')
+                    ->sortable(true)
+                    ->alignCenter()
+                    ->wrapHeader()
+                    ->visibleFrom('md'),
 
             ])
             ->filters([

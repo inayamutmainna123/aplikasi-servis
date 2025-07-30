@@ -26,10 +26,10 @@ class PivotTable extends Model
         return $this->belongsTo(ServiceDetail::class);
     }
 
-    public function service_item()
-    {
-        return $this->belongsTo(\App\Models\ServiceItem::class, 'service_item_id');
-    }
+    // public function service_item()
+    // {
+    //     return $this->belongsTo(\App\Models\ServiceItem::class, 'service_item_id');
+    // }
 
 
     public function sparepart()
@@ -44,5 +44,9 @@ class PivotTable extends Model
     public function pembayaran()
     {
         return $this->belongsTo(Pembayaran::class);
+    }
+    public function service_item()
+    {
+        return $this->belongsTo(ServiceItem::class, 'service_item_id');
     }
 }

@@ -15,7 +15,4 @@ class ServiceItem extends Model
         'harga_service',
         'deskripsi',
     ];
-    
-    
 }
-

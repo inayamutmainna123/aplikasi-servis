@@ -29,6 +29,7 @@ class ServiceDetail extends Model
         'tanggal_service',
     ];
 
+
     protected $casts = [
         'status' => StatusServiceDetail::class,
     ];
