@@ -42,6 +42,7 @@
             padding: 15px;
             text-align: left;
             columns: center;
+            text-align: center;
             left: -60px;
             width: 90px;
             top: 100px;
